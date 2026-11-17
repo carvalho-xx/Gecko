@@ -1,0 +1,62 @@
+erDiagram
+    GAME ||--o{ PLAYTHROUGH : "possui (1:N)"
+    PLAYTHROUGH ||--o{ JOURNAL_ENTRY : "contém (1:N)"
+    GAME ||--o{ GAME_PLATFORM_REF : "disponível_em (N:N)"
+    PLATFORM ||--o{ GAME_PLATFORM_REF : "hospeda (N:N)"
+    GAME ||--o{ GAME_CUSTOM_LIST_REF : "pertence_a (N:N)"
+    CUSTOM_LIST ||--o{ GAME_CUSTOM_LIST_REF : "agrupa (N:N)"
+
+    GAME {
+        String id PK "ID IGDB ou UUID v4 (cadastro manual)"
+        Long steam_app_id UK "Opcional: indexado para batching IGDB (RNF05)"
+        String psn_title_id UK "Opcional: indexado para reconciliação PSN"
+        String title
+        Long release_date_ms "Último dia inferido para previsões TBA"
+        String status "Quero Comprar, Backlog, Jogando Atualmente, Zerado, Pausado, Abandonado"
+        String license_type "Possuo, Assinatura Temporária"
+        Boolean is_day_one
+        Long hltb_main_story_ms
+        Long hltb_main_sides_ms
+        Long hltb_completionist_ms
+        String selected_play_style "Rushar, Normal, Platina"
+        Long platform_reported_time_ms "Eixo API (Delta Baseline)"
+        Long local_logged_time_ms "Eixo Offline (Delta Baseline)"
+        Float user_rating "Escala 0.00 a 11.00"
+        Float cost_paid "Métrica opt-in para RF26"
+    }
+
+    PLAYTHROUGH {
+        Long id PK "Autoincremento SQLite"
+        String game_id FK "Indexado (CASCADE)"
+        Long start_timestamp_ms
+        Long end_timestamp_ms
+        Long current_session_start_ms "Timestamp temporário do Foreground Service"
+    }
+
+    JOURNAL_ENTRY {
+        Long id PK "Autoincremento SQLite"
+        Long playthrough_id FK "Indexado (CASCADE)"
+        Long timestamp_ms
+        String text_content
+        Long accumulated_playtime_ms "Snapshot do tempo decorrido até a anotação"
+    }
+
+    PLATFORM {
+        String id PK
+        String name
+    }
+
+    GAME_PLATFORM_REF {
+        String game_id PK, FK "Indexado (CASCADE)"
+        String platform_id PK, FK "Indexado (CASCADE)"
+    }
+
+    CUSTOM_LIST {
+        Long id PK "Autoincremento SQLite"
+        String name
+    }
+
+    GAME_CUSTOM_LIST_REF {
+        String game_id PK, FK "Indexado (CASCADE)"
+        Long custom_list_id PK, FK "Indexado (CASCADE)"
+    }

@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant UI as App / User
+    participant WM as WorkManager (PeriodicWorker)
+    participant KS as EncryptedSharedPreferences (Keystore)
+    participant PSN as Sony Authentication API
+
+    UI->>KS: Insere cookie "npsso" inicial (validade 60 dias)
+    
+    loop Tarefa Periódica (Restrição: NetworkType.CONNECTED)
+        WM->>KS: Lê "npsso" e Refresh Token atual
+        
+        Note over WM,PSN: Tarefa respeita janelas de manutenção do Doze Mode
+        WM->>PSN: Solicita novo Access Token (Bearer)
+        
+        alt Privacy Restricted ou Erro Interno (ex: 2281077)
+            PSN-->>WM: Retorna JSON nulo/vazio
+            WM->>UI: Dispara aviso orientativo (Desbloquear atividade no console)
+        else Autenticação Bem Sucedida
+            PSN-->>WM: Retorna Access Token (1h) e novo Refresh Token (60 dias)
+            WM->>KS: Sobrescreve credenciais criptografadas de forma segura
+            Note over WM: Sessão renovada silenciosamente antes do vencimento do npsso
+        end
+    end

@@ -1,0 +1,69 @@
+# ==========================================
+
+# 1. Android & Gradle Builds
+
+# ==========================================
+
+*.iml
+.gradle/
+build/
+*/build/
+/captures/
+.externalNativeBuild/
+.cxx/
+
+# ==========================================
+
+# 2. Configurações Locais e IDE (Android Studio / IntelliJ)
+
+# ==========================================
+
+/local.properties
+local.properties
+.idea/
+!.idea/codeStyles/
+!.idea/misc.xml
+!.idea/vcs.xml
+*.ipr
+*.iws
+
+# ==========================================
+
+# 3. Segurança & BYOK (Proibido Versionar Chaves)
+
+# ==========================================
+
+*.jks
+*.keystore
+secrets.properties
+*.key
+*.token
+
+# ==========================================
+
+# 4. Ferramentas Locais & MCP (Codebase Memory / SQLite Inspector)
+
+# ==========================================
+
+# Bancos de dados de depuração e inspeção local
+
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Exceção explícita: os schemas do Room DEVEM ser versionados no Git
+
+!schemas/
+!schemas/
+
+# ==========================================
+
+# 5. Sistema Operacional & Arquivos Temporários
+
+# ==========================================
+
+.DS_Store
+Thumbs.db
+text.txt
+*.log

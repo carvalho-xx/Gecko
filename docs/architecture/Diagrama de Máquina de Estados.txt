@@ -1,0 +1,31 @@
+stateDiagram-v2
+    [*] --> QueroComprar : Adicionado à Wishlist
+    [*] --> Possuo : Adicionado à Biblioteca
+    
+    QueroComprar --> Possuo : Jogo Adquirido
+    
+    Possuo --> JogandoAtualmente : Inicia Sessão
+    
+    state JogandoAtualmente {
+        [*] --> Ativo : Playthrough Iniciado
+        Ativo --> Cronometro : Foreground Service
+        Cronometro --> Ativo : Pausa/Stop
+        Ativo --> Avaliacao : Conclui (0-11)
+        Avaliacao --> [*]
+    }
+    
+    JogandoAtualmente --> Zerado : Completa Campanha
+    JogandoAtualmente --> Pausado : Interrompe
+    JogandoAtualmente --> Abandonado : Desiste
+    
+    Pausado --> JogandoAtualmente : Retoma
+    Abandonado --> JogandoAtualmente : Tenta Novamente
+    
+    Zerado --> JogandoAtualmente : Replay / New Game+
+    
+    note right of Zerado
+        Cria nova instância de PLAYTHROUGH 1:N
+        sem sobrescrever a conclusão anual anterior.
+    end note
+    
+    Zerado --> [*]   

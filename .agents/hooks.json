@@ -1,0 +1,28 @@
+{
+  "android-continuous-integrity-gate": {
+    "enabled": true,
+    "PostToolUse": [
+      {
+        "matcher": "write_to_file|replace_file_content",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./gradlew testDebugUnitTest -x lint",
+            "timeout": 120
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./gradlew ktlintCheck",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  }
+}

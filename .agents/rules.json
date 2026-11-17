@@ -1,0 +1,16 @@
+{
+  "inherits": [
+    {
+      "path": "../.antigravity/memory/systemPatterns.md"
+    }
+  ],
+  "entries": [
+    {
+      "path": "rules",
+      "exclude": [
+        "deprecated_rules.md",
+        "drafts/"
+      ]
+    }
+  ]
+}

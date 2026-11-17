@@ -1,0 +1,24 @@
+sequenceDiagram
+    participant UI as ViewModel (Smart Scheduler)
+    participant Rep as Repository (HLTB)
+    participant WM as WorkManager (Retry)
+    participant DAO as SQLite (Tabela Fallback)
+    participant API as HLTB Endpoint
+
+    UI->>Rep: Requisita tempos médios
+    Rep->>API: GET /api/find/init (Desktop User-Agent)
+    
+    alt Sucesso HTTP 200
+        API-->>Rep: Retorna JSON com hpKey, hpVal e Session Token
+        Rep->>API: POST /api/find (Injeta cabeçalhos e payload JSON com chaves dinâmicas)
+        API-->>Rep: Retorna tempos da campanha
+        Rep->>DAO: Atualiza cache perpetuamente
+        Rep-->>UI: Retorna métricas HLTB
+    else Falha (Cloudflare Turnstile 403/404)
+        API-->>Rep: Rejeição HTTP
+        Rep->>WM: Agenda retentativa (BackoffPolicy.EXPONENTIAL)
+        Note over Rep,DAO: Circuit Breaker acionado
+        Rep->>DAO: Consulta Fallback Estático embutido
+        DAO-->>Rep: Retorna medianas históricas
+        Rep-->>UI: Retorna métricas via Degradação Graciosa
+    end 

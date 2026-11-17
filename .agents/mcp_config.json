@@ -1,0 +1,35 @@
+{
+  "mcpServers": {
+    "codebase-memory": {
+      "command": "codebase-memory-mcp",
+      "args": []
+    },
+    "android-build-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "io.github.dev-jackson/androidbuild-mcp"
+      ]
+    },
+    "room-sqlite-inspector": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-sqlite-readonly",
+        "./schemas/gecko-database.db"
+      ]
+    },
+    "figcraft-designer": {
+      "command": "figcraft-cli",
+      "args": [
+        "mcp"
+      ]
+    },
+    "wordcraft-docs": {
+      "command": "wordcraft-cli",
+      "args": [
+        "mcp"
+      ]
+    }
+  }
+}
