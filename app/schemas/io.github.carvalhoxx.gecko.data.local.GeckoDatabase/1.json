@@ -1,0 +1,136 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "534f78d60a2241ce7af4e0a18e587a05",
+    "entities": [
+      {
+        "tableName": "GAME",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `steam_app_id` INTEGER, `psn_title_id` TEXT, `title` TEXT NOT NULL, `release_date_ms` INTEGER, `status` TEXT NOT NULL, `license_type` TEXT NOT NULL, `is_day_one` INTEGER NOT NULL, `hltb_main_story_ms` INTEGER NOT NULL, `hltb_main_sides_ms` INTEGER NOT NULL, `hltb_completionist_ms` INTEGER NOT NULL, `selected_play_style` TEXT NOT NULL, `platform_reported_time_ms` INTEGER NOT NULL, `local_logged_time_ms` INTEGER NOT NULL, `user_rating` REAL, `cost_paid` REAL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "steam_app_id",
+            "columnName": "steam_app_id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "psn_title_id",
+            "columnName": "psn_title_id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "release_date_ms",
+            "columnName": "release_date_ms",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "license_type",
+            "columnName": "license_type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "is_day_one",
+            "columnName": "is_day_one",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hltb_main_story_ms",
+            "columnName": "hltb_main_story_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hltb_main_sides_ms",
+            "columnName": "hltb_main_sides_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hltb_completionist_ms",
+            "columnName": "hltb_completionist_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "selected_play_style",
+            "columnName": "selected_play_style",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "platform_reported_time_ms",
+            "columnName": "platform_reported_time_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "local_logged_time_ms",
+            "columnName": "local_logged_time_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "user_rating",
+            "columnName": "user_rating",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "cost_paid",
+            "columnName": "cost_paid",
+            "affinity": "REAL"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_GAME_steam_app_id",
+            "unique": true,
+            "columnNames": [
+              "steam_app_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_GAME_steam_app_id` ON `${TABLE_NAME}` (`steam_app_id`)"
+          },
+          {
+            "name": "index_GAME_psn_title_id",
+            "unique": true,
+            "columnNames": [
+              "psn_title_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_GAME_psn_title_id` ON `${TABLE_NAME}` (`psn_title_id`)"
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '534f78d60a2241ce7af4e0a18e587a05')"
+    ]
+  }
+}
