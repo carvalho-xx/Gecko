@@ -81,7 +81,7 @@
   - **`TI-03` (Validação de Schema KSP):** Verificar `2.json` gerado pelo KSP comprovando ausência de `kotlin.time.Duration` e uso exclusivo de `INTEGER`/`Long` em todas as colunas temporais, além de teste de `MigrationTestHelper` v1→v2.
   - Teste unitário/instrumentado de pré-população da tabela `HltbFallbackEntity`.
 
-### [ ] Etapa 0.4 — Cofre Criptográfico BYOK e Preferências Locais do Usuário
+### [x] Etapa 0.4 — Cofre Criptográfico BYOK e Preferências Locais do Usuário
 - **Rastreabilidade:** `US1.1`, `RF01`, `RF02`, `RNF03`
 - **Planejamento:**
   - Separar dados sensíveis (chaves de API e tokens OAuth2) em `EncryptedSharedPreferences` (MasterKey AES256-GCM no Android Keystore) de preferências não sensíveis (nome do perfil, URI local do avatar, disponibilidade diária em `Long` ms, estilo padrão, `isFirstLaunchCompleted`, `enableFinanceModule`, `calibrationFactor`) em `Preferences DataStore`.
