@@ -1,0 +1,607 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 2,
+    "identityHash": "ea6ca6f66e6add543974363055be07fb",
+    "entities": [
+      {
+        "tableName": "GAME",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `steam_app_id` INTEGER, `psn_title_id` TEXT, `title` TEXT NOT NULL, `release_date_ms` INTEGER, `status` TEXT NOT NULL, `license_type` TEXT NOT NULL, `is_day_one` INTEGER NOT NULL, `hltb_main_story_ms` INTEGER NOT NULL, `hltb_main_sides_ms` INTEGER NOT NULL, `hltb_completionist_ms` INTEGER NOT NULL, `selected_play_style` TEXT NOT NULL, `platform_reported_time_ms` INTEGER NOT NULL, `local_logged_time_ms` INTEGER NOT NULL, `user_rating` REAL, `cost_paid` REAL, `cover_url` TEXT, `backdrop_url` TEXT, `synopsis` TEXT, `developer` TEXT, `publisher` TEXT, `genres_csv` TEXT, `subscription_expiry_ms` INTEGER, `status_updated_at_ms` INTEGER, `release_precision` TEXT, `retro_achievements_id` INTEGER, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "steam_app_id",
+            "columnName": "steam_app_id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "psn_title_id",
+            "columnName": "psn_title_id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "release_date_ms",
+            "columnName": "release_date_ms",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "license_type",
+            "columnName": "license_type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "is_day_one",
+            "columnName": "is_day_one",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hltb_main_story_ms",
+            "columnName": "hltb_main_story_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hltb_main_sides_ms",
+            "columnName": "hltb_main_sides_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hltb_completionist_ms",
+            "columnName": "hltb_completionist_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "selected_play_style",
+            "columnName": "selected_play_style",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "platform_reported_time_ms",
+            "columnName": "platform_reported_time_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "local_logged_time_ms",
+            "columnName": "local_logged_time_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "user_rating",
+            "columnName": "user_rating",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "cost_paid",
+            "columnName": "cost_paid",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "cover_url",
+            "columnName": "cover_url",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "backdrop_url",
+            "columnName": "backdrop_url",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "synopsis",
+            "columnName": "synopsis",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "developer",
+            "columnName": "developer",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "publisher",
+            "columnName": "publisher",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "genres_csv",
+            "columnName": "genres_csv",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "subscription_expiry_ms",
+            "columnName": "subscription_expiry_ms",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "status_updated_at_ms",
+            "columnName": "status_updated_at_ms",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "release_precision",
+            "columnName": "release_precision",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "retro_achievements_id",
+            "columnName": "retro_achievements_id",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_GAME_steam_app_id",
+            "unique": true,
+            "columnNames": [
+              "steam_app_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_GAME_steam_app_id` ON `${TABLE_NAME}` (`steam_app_id`)"
+          },
+          {
+            "name": "index_GAME_psn_title_id",
+            "unique": true,
+            "columnNames": [
+              "psn_title_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_GAME_psn_title_id` ON `${TABLE_NAME}` (`psn_title_id`)"
+          }
+        ]
+      },
+      {
+        "tableName": "PLAYTHROUGH",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `game_id` TEXT NOT NULL, `start_timestamp_ms` INTEGER NOT NULL, `end_timestamp_ms` INTEGER, `current_session_start_ms` INTEGER, `rating` REAL, `notes_archived` INTEGER NOT NULL, FOREIGN KEY(`game_id`) REFERENCES `GAME`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "game_id",
+            "columnName": "game_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "start_timestamp_ms",
+            "columnName": "start_timestamp_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "end_timestamp_ms",
+            "columnName": "end_timestamp_ms",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "current_session_start_ms",
+            "columnName": "current_session_start_ms",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "rating",
+            "columnName": "rating",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "notes_archived",
+            "columnName": "notes_archived",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_PLAYTHROUGH_game_id",
+            "unique": false,
+            "columnNames": [
+              "game_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_PLAYTHROUGH_game_id` ON `${TABLE_NAME}` (`game_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "GAME",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "game_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "JOURNAL_ENTRY",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `playthrough_id` INTEGER NOT NULL, `timestamp_ms` INTEGER NOT NULL, `text_content` TEXT NOT NULL, `accumulated_playtime_ms` INTEGER NOT NULL, FOREIGN KEY(`playthrough_id`) REFERENCES `PLAYTHROUGH`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "playthrough_id",
+            "columnName": "playthrough_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp_ms",
+            "columnName": "timestamp_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "text_content",
+            "columnName": "text_content",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accumulated_playtime_ms",
+            "columnName": "accumulated_playtime_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_JOURNAL_ENTRY_playthrough_id",
+            "unique": false,
+            "columnNames": [
+              "playthrough_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_JOURNAL_ENTRY_playthrough_id` ON `${TABLE_NAME}` (`playthrough_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "PLAYTHROUGH",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "playthrough_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "PLATFORM",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "GAME_PLATFORM_REF",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`game_id` TEXT NOT NULL, `platform_id` TEXT NOT NULL, PRIMARY KEY(`game_id`, `platform_id`), FOREIGN KEY(`game_id`) REFERENCES `GAME`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`platform_id`) REFERENCES `PLATFORM`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "game_id",
+            "columnName": "game_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "platform_id",
+            "columnName": "platform_id",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "game_id",
+            "platform_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_GAME_PLATFORM_REF_game_id",
+            "unique": false,
+            "columnNames": [
+              "game_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_GAME_PLATFORM_REF_game_id` ON `${TABLE_NAME}` (`game_id`)"
+          },
+          {
+            "name": "index_GAME_PLATFORM_REF_platform_id",
+            "unique": false,
+            "columnNames": [
+              "platform_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_GAME_PLATFORM_REF_platform_id` ON `${TABLE_NAME}` (`platform_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "GAME",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "game_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "PLATFORM",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "platform_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "CUSTOM_LIST",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `is_franchise` INTEGER NOT NULL, `external_franchise_id` INTEGER)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "is_franchise",
+            "columnName": "is_franchise",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "external_franchise_id",
+            "columnName": "external_franchise_id",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "GAME_CUSTOM_LIST_REF",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`game_id` TEXT NOT NULL, `custom_list_id` INTEGER NOT NULL, PRIMARY KEY(`game_id`, `custom_list_id`), FOREIGN KEY(`game_id`) REFERENCES `GAME`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`custom_list_id`) REFERENCES `CUSTOM_LIST`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "game_id",
+            "columnName": "game_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "custom_list_id",
+            "columnName": "custom_list_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "game_id",
+            "custom_list_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_GAME_CUSTOM_LIST_REF_game_id",
+            "unique": false,
+            "columnNames": [
+              "game_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_GAME_CUSTOM_LIST_REF_game_id` ON `${TABLE_NAME}` (`game_id`)"
+          },
+          {
+            "name": "index_GAME_CUSTOM_LIST_REF_custom_list_id",
+            "unique": false,
+            "columnNames": [
+              "custom_list_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_GAME_CUSTOM_LIST_REF_custom_list_id` ON `${TABLE_NAME}` (`custom_list_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "GAME",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "game_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "CUSTOM_LIST",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "custom_list_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "HLTB_FALLBACK",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`normalized_title` TEXT NOT NULL, `display_title` TEXT NOT NULL, `genre_category` TEXT NOT NULL, `main_story_ms` INTEGER NOT NULL, `main_sides_ms` INTEGER NOT NULL, `completionist_ms` INTEGER NOT NULL, PRIMARY KEY(`normalized_title`))",
+        "fields": [
+          {
+            "fieldPath": "normalized_title",
+            "columnName": "normalized_title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "display_title",
+            "columnName": "display_title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "genre_category",
+            "columnName": "genre_category",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "main_story_ms",
+            "columnName": "main_story_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "main_sides_ms",
+            "columnName": "main_sides_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "completionist_ms",
+            "columnName": "completionist_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "normalized_title"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_HLTB_FALLBACK_genre_category",
+            "unique": false,
+            "columnNames": [
+              "genre_category"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_HLTB_FALLBACK_genre_category` ON `${TABLE_NAME}` (`genre_category`)"
+          }
+        ]
+      },
+      {
+        "tableName": "ANNUAL_GOAL",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`year` INTEGER NOT NULL, `target_games` INTEGER NOT NULL, PRIMARY KEY(`year`))",
+        "fields": [
+          {
+            "fieldPath": "year",
+            "columnName": "year",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "target_games",
+            "columnName": "target_games",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "year"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ea6ca6f66e6add543974363055be07fb')"
+    ]
+  }
+}

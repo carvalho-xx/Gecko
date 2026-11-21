@@ -60,5 +60,35 @@ data class Game(
     val user_rating: Float? = null,
 
     @ColumnInfo(name = "cost_paid")
-    val cost_paid: Float? = null
+    val cost_paid: Float? = null,
+
+    @ColumnInfo(name = "cover_url")
+    val cover_url: String? = null,
+
+    @ColumnInfo(name = "backdrop_url")
+    val backdrop_url: String? = null,
+
+    @ColumnInfo(name = "synopsis")
+    val synopsis: String? = null,
+
+    @ColumnInfo(name = "developer")
+    val developer: String? = null,
+
+    @ColumnInfo(name = "publisher")
+    val publisher: String? = null,
+
+    @ColumnInfo(name = "genres_csv")
+    val genres_csv: String? = null,
+
+    @ColumnInfo(name = "subscription_expiry_ms")
+    val subscription_expiry_ms: Long? = null,
+
+    @ColumnInfo(name = "status_updated_at_ms")
+    val status_updated_at_ms: Long? = null,
+
+    @ColumnInfo(name = "release_precision")
+    val release_precision: String? = null,
+
+    @ColumnInfo(name = "retro_achievements_id")
+    val retro_achievements_id: Long? = null
 )

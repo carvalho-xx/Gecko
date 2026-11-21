@@ -1,0 +1,258 @@
+[
+  {
+    "normalized_title": "elden ring",
+    "display_title": "Elden Ring",
+    "genre_category": "rpg",
+    "main_story_ms": 216000000,
+    "main_sides_ms": 360000000,
+    "completionist_ms": 486000000
+  },
+  {
+    "normalized_title": "hollow knight",
+    "display_title": "Hollow Knight",
+    "genre_category": "metroidvania",
+    "main_story_ms": 97200000,
+    "main_sides_ms": 147600000,
+    "completionist_ms": 230400000
+  },
+  {
+    "normalized_title": "celeste",
+    "display_title": "Celeste",
+    "genre_category": "platformer",
+    "main_story_ms": 28800000,
+    "main_sides_ms": 45000000,
+    "completionist_ms": 144000000
+  },
+  {
+    "normalized_title": "the witcher 3: wild hunt",
+    "display_title": "The Witcher 3: Wild Hunt",
+    "genre_category": "rpg",
+    "main_story_ms": 185400000,
+    "main_sides_ms": 374400000,
+    "completionist_ms": 626400000
+  },
+  {
+    "normalized_title": "red dead redemption 2",
+    "display_title": "Red Dead Redemption 2",
+    "genre_category": "action_adventure",
+    "main_story_ms": 180000000,
+    "main_sides_ms": 302400000,
+    "completionist_ms": 669600000
+  },
+  {
+    "normalized_title": "god of war",
+    "display_title": "God of War",
+    "genre_category": "action_adventure",
+    "main_story_ms": 73800000,
+    "main_sides_ms": 117000000,
+    "completionist_ms": 183600000
+  },
+  {
+    "normalized_title": "god of war ragnarok",
+    "display_title": "God of War Ragnarök",
+    "genre_category": "action_adventure",
+    "main_story_ms": 95400000,
+    "main_sides_ms": 147600000,
+    "completionist_ms": 194400000
+  },
+  {
+    "normalized_title": "hades",
+    "display_title": "Hades",
+    "genre_category": "roguelike",
+    "main_story_ms": 81000000,
+    "main_sides_ms": 169200000,
+    "completionist_ms": 345600000
+  },
+  {
+    "normalized_title": "baldur's gate 3",
+    "display_title": "Baldur's Gate 3",
+    "genre_category": "rpg",
+    "main_story_ms": 259200000,
+    "main_sides_ms": 406800000,
+    "completionist_ms": 597600000
+  },
+  {
+    "normalized_title": "persona 5 royal",
+    "display_title": "Persona 5 Royal",
+    "genre_category": "rpg",
+    "main_story_ms": 363600000,
+    "main_sides_ms": 442800000,
+    "completionist_ms": 511200000
+  },
+  {
+    "normalized_title": "bloodborne",
+    "display_title": "Bloodborne",
+    "genre_category": "rpg",
+    "main_story_ms": 118800000,
+    "main_sides_ms": 165600000,
+    "completionist_ms": 270000000
+  },
+  {
+    "normalized_title": "sekiro: shadows die twice",
+    "display_title": "Sekiro: Shadows Die Twice",
+    "genre_category": "action_adventure",
+    "main_story_ms": 108000000,
+    "main_sides_ms": 154800000,
+    "completionist_ms": 255600000
+  },
+  {
+    "normalized_title": "cyberpunk 2077",
+    "display_title": "Cyberpunk 2077",
+    "genre_category": "rpg",
+    "main_story_ms": 93600000,
+    "main_sides_ms": 223200000,
+    "completionist_ms": 378000000
+  },
+  {
+    "normalized_title": "resident evil 4",
+    "display_title": "Resident Evil 4",
+    "genre_category": "survival_horror",
+    "main_story_ms": 57600000,
+    "main_sides_ms": 79200000,
+    "completionist_ms": 216000000
+  },
+  {
+    "normalized_title": "silent hill 2",
+    "display_title": "Silent Hill 2",
+    "genre_category": "survival_horror",
+    "main_story_ms": 57600000,
+    "main_sides_ms": 68400000,
+    "completionist_ms": 122400000
+  },
+  {
+    "normalized_title": "the legend of zelda: breath of the wild",
+    "display_title": "The Legend of Zelda: Breath of the Wild",
+    "genre_category": "action_adventure",
+    "main_story_ms": 180000000,
+    "main_sides_ms": 356400000,
+    "completionist_ms": 691200000
+  },
+  {
+    "normalized_title": "super mario odyssey",
+    "display_title": "Super Mario Odyssey",
+    "genre_category": "platformer",
+    "main_story_ms": 45000000,
+    "main_sides_ms": 99000000,
+    "completionist_ms": 223200000
+  },
+  {
+    "normalized_title": "portal 2",
+    "display_title": "Portal 2",
+    "genre_category": "puzzle",
+    "main_story_ms": 30600000,
+    "main_sides_ms": 43200000,
+    "completionist_ms": 79200000
+  },
+  {
+    "normalized_title": "stardew valley",
+    "display_title": "Stardew Valley",
+    "genre_category": "simulation",
+    "main_story_ms": 190800000,
+    "main_sides_ms": 349200000,
+    "completionist_ms": 604800000
+  },
+  {
+    "normalized_title": "chrono trigger",
+    "display_title": "Chrono Trigger",
+    "genre_category": "rpg",
+    "main_story_ms": 82800000,
+    "main_sides_ms": 100800000,
+    "completionist_ms": 154800000
+  },
+  {
+    "normalized_title": "final fantasy vii remake",
+    "display_title": "Final Fantasy VII Remake",
+    "genre_category": "rpg",
+    "main_story_ms": 118800000,
+    "main_sides_ms": 151200000,
+    "completionist_ms": 306000000
+  },
+  {
+    "normalized_title": "the last of us part i",
+    "display_title": "The Last of Us Part I",
+    "genre_category": "action_adventure",
+    "main_story_ms": 54000000,
+    "main_sides_ms": 64800000,
+    "completionist_ms": 86400000
+  },
+  {
+    "normalized_title": "ghost of tsushima",
+    "display_title": "Ghost of Tsushima",
+    "genre_category": "action_adventure",
+    "main_story_ms": 90000000,
+    "main_sides_ms": 165600000,
+    "completionist_ms": 223200000
+  },
+  {
+    "normalized_title": "doom eternal",
+    "display_title": "DOOM Eternal",
+    "genre_category": "fps",
+    "main_story_ms": 52200000,
+    "main_sides_ms": 75600000,
+    "completionist_ms": 108000000
+  },
+  {
+    "normalized_title": "genre:action_adventure",
+    "display_title": "Mediana — Ação e Aventura",
+    "genre_category": "genre:action_adventure",
+    "main_story_ms": 57600000,
+    "main_sides_ms": 93600000,
+    "completionist_ms": 154800000
+  },
+  {
+    "normalized_title": "genre:rpg",
+    "display_title": "Mediana — RPG",
+    "genre_category": "genre:rpg",
+    "main_story_ms": 144000000,
+    "main_sides_ms": 234000000,
+    "completionist_ms": 360000000
+  },
+  {
+    "normalized_title": "genre:metroidvania",
+    "display_title": "Mediana — Metroidvania",
+    "genre_category": "genre:metroidvania",
+    "main_story_ms": 43200000,
+    "main_sides_ms": 64800000,
+    "completionist_ms": 108000000
+  },
+  {
+    "normalized_title": "genre:platformer",
+    "display_title": "Mediana — Plataforma",
+    "genre_category": "genre:platformer",
+    "main_story_ms": 28800000,
+    "main_sides_ms": 46800000,
+    "completionist_ms": 86400000
+  },
+  {
+    "normalized_title": "genre:roguelike",
+    "display_title": "Mediana — Roguelike",
+    "genre_category": "genre:roguelike",
+    "main_story_ms": 54000000,
+    "main_sides_ms": 108000000,
+    "completionist_ms": 216000000
+  },
+  {
+    "normalized_title": "genre:survival_horror",
+    "display_title": "Mediana — Survival Horror",
+    "genre_category": "genre:survival_horror",
+    "main_story_ms": 39600000,
+    "main_sides_ms": 54000000,
+    "completionist_ms": 97200000
+  },
+  {
+    "normalized_title": "genre:fps",
+    "display_title": "Mediana — FPS / Tiro",
+    "genre_category": "genre:fps",
+    "main_story_ms": 36000000,
+    "main_sides_ms": 54000000,
+    "completionist_ms": 90000000
+  },
+  {
+    "normalized_title": "genre:default",
+    "display_title": "Mediana Geral",
+    "genre_category": "genre:default",
+    "main_story_ms": 54000000,
+    "main_sides_ms": 86400000,
+    "completionist_ms": 144000000
+  }
+]

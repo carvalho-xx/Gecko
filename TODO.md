@@ -60,7 +60,7 @@
   - Teste unitário `ReleaseFeatureFlagsTest` validando presets `MVP_V1_0`, `EXPANSION_V1_1` e `EVOLUTION_V2_0`.
   - Validação de build (`./gradlew assembleDebug testDebugUnitTest`) garantindo compilação KSP + Hilt sem erros.
 
-### [ ] Etapa 0.3 — Esquema Relacional Completo do Room (DER), Migrations e Fallback HLTB
+### [x] Etapa 0.3 — Esquema Relacional Completo do Room (DER), Migrations e Fallback HLTB
 - **Rastreabilidade:** `DER.txt`, `RF01.1`, `RF05`, `RF19`, `RF23`, `RF23.1`, `RF27`, `RNF07`, `TI-01`, `TI-03`
 - **Planejamento:**
   - Projetar todas as entidades do DER mantendo estritamente `Long` para tempos/datas e `ForeignKey.CASCADE` em todos os vínculos filhos:

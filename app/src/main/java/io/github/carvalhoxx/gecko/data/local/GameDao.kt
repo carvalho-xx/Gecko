@@ -1,11 +1,20 @@
 package io.github.carvalhoxx.gecko.data.local
 
+import androidx.room.ColumnInfo
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
+
+data class GameStatusCount(
+    @ColumnInfo(name = "status")
+    val status: String,
+
+    @ColumnInfo(name = "count")
+    val count: Int
+)
 
 @Dao
 interface GameDao {
@@ -27,6 +36,35 @@ interface GameDao {
 
     @Query("SELECT * FROM GAME WHERE status = :status")
     fun observeGamesByStatus(status: String): Flow<List<Game>>
+
+    /**
+     * RN-BKL-01: Backlog Elegível estrito para sugestões e planejamento.
+     * Filtra explicitamente por status = 'BACKLOG' e licenças ativas ('OWNED', 'SUBSCRIPTION').
+     * Proibido usar status != ou NOT IN.
+     */
+    @Query(
+        """
+        SELECT * FROM GAME
+        WHERE status = 'BACKLOG' AND license_type IN ('OWNED', 'SUBSCRIPTION')
+        ORDER BY title ASC
+        """
+    )
+    fun observeEligibleBacklogGames(): Flow<List<Game>>
+
+    @Query(
+        """
+        SELECT * FROM GAME
+        WHERE status = 'BACKLOG' AND license_type IN ('OWNED', 'SUBSCRIPTION')
+        ORDER BY title ASC
+        """
+    )
+    suspend fun getEligibleBacklogGames(): List<Game>
+
+    @Query("SELECT status, COUNT(*) AS count FROM GAME GROUP BY status")
+    fun observeGameCountsByStatus(): Flow<List<GameStatusCount>>
+
+    @Query("SELECT COUNT(*) FROM GAME")
+    fun observeTotalGamesCount(): Flow<Int>
 
     /**
      * Atualiza exclusivamente o eixo da API externa (Delta Baseline),

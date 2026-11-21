@@ -99,6 +99,30 @@ class GameDaoTest {
         assertNull(gameDao.getGameById("igdb-999"))
     }
 
+    @Test
+    fun `eligible backlog query should include only BACKLOG with active license and exclude PAUSED or ABANDONED`() =
+        runTest {
+            gameDao.insertGames(
+                listOf(
+                    Game(id = "1", title = "A Eligible Owned", status = "BACKLOG", license_type = "OWNED"),
+                    Game(id = "2", title = "B Eligible Sub", status = "BACKLOG", license_type = "SUBSCRIPTION"),
+                    Game(id = "3", title = "C Paused", status = "PAUSED", license_type = "OWNED"),
+                    Game(id = "4", title = "D Abandoned", status = "ABANDONED", license_type = "OWNED"),
+                    Game(id = "5", title = "E Wishlist", status = "WISHLIST", license_type = "WISHLIST"),
+                    Game(id = "6", title = "F Backlog Wishlist", status = "BACKLOG", license_type = "WISHLIST")
+                )
+            )
+
+            val eligible = gameDao.observeEligibleBacklogGames().first()
+            assertEquals(listOf("1", "2"), eligible.map { it.id })
+            assertEquals(6, gameDao.observeTotalGamesCount().first())
+
+            val counts = gameDao.observeGameCountsByStatus().first().associate { it.status to it.count }
+            assertEquals(3, counts["BACKLOG"])
+            assertEquals(1, counts["PAUSED"])
+            assertEquals(1, counts["ABANDONED"])
+        }
+
     private class InMemoryGameDao : GameDao {
         private val storage = MutableStateFlow<Map<String, Game>>(emptyMap())
 
@@ -121,6 +145,23 @@ class GameDaoTest {
         override fun observeGamesByStatus(status: String): Flow<List<Game>> = storage.map { map ->
             map.values.filter { it.status == status }
         }
+
+        override fun observeEligibleBacklogGames(): Flow<List<Game>> = storage.map { map ->
+            map.values
+                .filter { it.status == "BACKLOG" && (it.license_type == "OWNED" || it.license_type == "SUBSCRIPTION") }
+                .sortedBy { it.title }
+        }
+
+        override suspend fun getEligibleBacklogGames(): List<Game> = observeEligibleBacklogGames().first()
+
+        override fun observeGameCountsByStatus(): Flow<List<GameStatusCount>> = storage.map { map ->
+            map.values
+                .groupingBy { it.status }
+                .eachCount()
+                .map { (status, count) -> GameStatusCount(status = status, count = count) }
+        }
+
+        override fun observeTotalGamesCount(): Flow<Int> = storage.map { it.size }
 
         override suspend fun updatePlatformReportedTime(gameId: String, reportedTimeMs: Long) {
             storage.update { current ->
