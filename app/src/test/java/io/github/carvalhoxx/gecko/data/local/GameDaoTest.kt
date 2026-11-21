@@ -112,20 +112,14 @@ class GameDaoTest {
             }
         }
 
-        override suspend fun getGameById(gameId: String): Game? {
-            return storage.value[gameId]
-        }
+        override suspend fun getGameById(gameId: String): Game? = storage.value[gameId]
 
-        override fun observeGameById(gameId: String): Flow<Game?> {
-            return storage.map { it[gameId] }
-        }
+        override fun observeGameById(gameId: String): Flow<Game?> = storage.map { it[gameId] }
 
-        override fun observeAllGames(): Flow<List<Game>> {
-            return storage.map { it.values.toList() }
-        }
+        override fun observeAllGames(): Flow<List<Game>> = storage.map { it.values.toList() }
 
-        override fun observeGamesByStatus(status: String): Flow<List<Game>> {
-            return storage.map { map -> map.values.filter { it.status == status } }
+        override fun observeGamesByStatus(status: String): Flow<List<Game>> = storage.map { map ->
+            map.values.filter { it.status == status }
         }
 
         override suspend fun updatePlatformReportedTime(gameId: String, reportedTimeMs: Long) {
@@ -142,9 +136,11 @@ class GameDaoTest {
         override suspend fun addLocalLoggedTime(gameId: String, sessionDurationMs: Long) {
             storage.update { current ->
                 val existing = current[gameId] ?: return@update current
-                current + (gameId to existing.copy(
-                    local_logged_time_ms = existing.local_logged_time_ms + sessionDurationMs
-                ))
+                current + (
+                    gameId to existing.copy(
+                        local_logged_time_ms = existing.local_logged_time_ms + sessionDurationMs
+                    )
+                    )
             }
         }
 

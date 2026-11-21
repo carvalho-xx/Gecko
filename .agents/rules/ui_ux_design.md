@@ -1,6 +1,6 @@
 ---
 trigger: globs
-globs: "**/preentation/**/*.kt, **/ui/**/*.kt"
+globs: "**/presentation/**/*.kt, **/ui/**/*.kt"
 description: "Diretrizes de Material Design 3, Tonal Elevation para OLED e elementos dinâmicos."
 ---
 

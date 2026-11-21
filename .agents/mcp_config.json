@@ -8,16 +8,18 @@
       "command": "npx",
       "args": [
         "-y",
-        "io.github.dev-jackson/androidbuild-mcp"
+        "@asjackson/androidbuild-mcp"
       ]
     },
     "room-sqlite-inspector": {
       "command": "npx",
       "args": [
         "-y",
-        "mcp-sqlite-readonly",
-        "./schemas/gecko-database.db"
-      ]
+        "mcp-sqlite-server"
+      ],
+      "env": {
+        "SQLITE_DB_PATH": "./app/schemas/gecko-database.db"
+      }
     },
     "figcraft-designer": {
       "command": "figcraft-cli",
