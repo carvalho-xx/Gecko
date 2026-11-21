@@ -189,7 +189,7 @@
 
 ## Fase 2 — Serviços Nativos, Rede BYOK e Sincronização Resiliente (MVP v1.0)
 
-### [ ] Etapa 2.1 — Cronômetro Ativo via Foreground Service Singleton (`specialUse`)
+### [x] Etapa 2.1 — Cronômetro Ativo via Foreground Service Singleton (`specialUse`)
 - **Rastreabilidade:** `US2.2`, `RF07`, `RF21`, `TI-02`, `.agents/rules/android_notifications.md`, Frame `SystemSurface FGS` e `MODAL_04_SessionConflict`
 - **Planejamento:**
   - Projetar `ActiveSessionForegroundService` estritamente **Singleton** (1 sessão cronometrada ativa por vez, mesmo havendo `N >= 2` jogos em `Jogando Atualmente`).

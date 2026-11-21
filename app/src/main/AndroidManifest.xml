@@ -33,6 +33,16 @@
                 tools:node="remove" />
         </provider>
 
+        <service
+            android:name=".data.sync.ActiveSessionForegroundService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="@string/fgs_special_use_subtype_description" />
+        </service>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

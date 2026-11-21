@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Gecko</string>
     <string name="fgs_special_use_subtype_description">Cronômetro ativo de sessão de jogo iniciado pelo usuário para registro contínuo offline de tempo jogado.</string>
+    <string name="timer_notification_channel_name">Cronômetro de Sessão Ativa</string>
+    <string name="timer_notification_channel_description">Exibe o tempo decorrido da campanha em andamento com controles rápidos de pausa e conclusão.</string>
+    <string name="timer_action_pause">Pausar</string>
+    <string name="timer_action_resume">Retomar</string>
+    <string name="timer_action_finish">Concluir Sessão</string>
+    <string name="timer_status_running">Em andamento • %1$s</string>
+    <string name="timer_status_paused">Pausado • %1$s</string>
 </resources>
