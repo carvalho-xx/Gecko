@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.github.carvalhoxx.gecko.domain.repository.GameRepository
 import io.github.carvalhoxx.gecko.domain.repository.PlaythroughRepository
+import io.github.carvalhoxx.gecko.domain.usecase.CalculateSmartScheduleUseCase
 import io.github.carvalhoxx.gecko.domain.usecase.GetEligibleBacklogGamesUseCase
 import io.github.carvalhoxx.gecko.domain.usecase.GetVisibleBacklogGamesUseCase
 import io.github.carvalhoxx.gecko.domain.usecase.MergeDeltaBaselineUseCase
@@ -16,6 +17,18 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object UseCaseModule {
+
+    @Provides
+    @Singleton
+    fun provideCalculateSmartScheduleUseCase(
+        gameRepository: GameRepository,
+        getEligibleBacklogGamesUseCase: GetEligibleBacklogGamesUseCase,
+        mergeDeltaBaselineUseCase: MergeDeltaBaselineUseCase
+    ): CalculateSmartScheduleUseCase = CalculateSmartScheduleUseCase(
+        gameRepository = gameRepository,
+        getEligibleBacklogGamesUseCase = getEligibleBacklogGamesUseCase,
+        mergeDeltaBaselineUseCase = mergeDeltaBaselineUseCase
+    )
 
     @Provides
     @Singleton

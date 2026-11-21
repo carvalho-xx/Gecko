@@ -139,7 +139,7 @@
   - **`GetEligibleBacklogGamesUseCaseTest` (obrigatório por `RN-BKL-01`):** Banco/fake com jogos `BACKLOG`, `PAUSED`, `ABANDONED`, `WISHLIST`, `PLAYING` e `COMPLETED` deve retornar exclusivamente `BACKLOG` com licença elegível.
   - Testes unitários de todas as transições válidas/inválidas da máquina de estados, registro de timestamps e `MergeDeltaBaselineUseCase` (incluindo valores > 24h e sync remoto menor que o baseline existente).
 
-### [ ] Etapa 1.3 — Motor Preditivo Smart Scheduler (Peso de Atenção, Hora Extra e Trava Unreleased)
+### [x] Etapa 1.3 — Motor Preditivo Smart Scheduler (Peso de Atenção, Hora Extra e Trava Unreleased)
 - **Rastreabilidade:** `US3.1`, `US3.2`, `RF02`, `RF06`, `RF13`, `RF15`, `RF15.1`, `RN-BKL-01`, `TU-01`, `TU-02`
 - **Planejamento:**
   - Formalizar fórmulas matemáticas em milissegundos (`Long`) e aritmética segura (zero números negativos, zero divisão por zero):
