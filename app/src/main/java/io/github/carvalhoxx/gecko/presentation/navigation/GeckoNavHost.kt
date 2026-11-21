@@ -46,6 +46,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import io.github.carvalhoxx.gecko.core.ReleaseFeatureFlags
 import io.github.carvalhoxx.gecko.presentation.components.GeckoSurfaceCard
+import io.github.carvalhoxx.gecko.presentation.onboarding.WelcomeOnboardingRoute
 import io.github.carvalhoxx.gecko.ui.theme.GeckoBackground
 import io.github.carvalhoxx.gecko.ui.theme.GeckoBottomNavActiveContent
 import io.github.carvalhoxx.gecko.ui.theme.GeckoBottomNavActivePill
@@ -164,11 +165,21 @@ fun GeckoBottomNavigationBar(
 @Composable
 fun GeckoAppScaffold(
     featureFlags: ReleaseFeatureFlags = ReleaseFeatureFlags.DEFAULT,
-    startDestination: String = GeckoRoutes.DASHBOARD,
+    startDestination: String = GeckoRoutes.WELCOME_ONBOARDING,
     initialNavigateGameId: Long? = null,
     navController: NavHostController = rememberNavController(),
-    welcomeOnboardingContent: @Composable (NavHostController) -> Unit = {
-        RoutePlaceholderScreen(title = "Bem-vindo ao Gecko", routeTag = "screen_welcome_onboarding")
+    welcomeOnboardingContent: @Composable (NavHostController) -> Unit = { controller ->
+        WelcomeOnboardingRoute(
+            onOnboardingFinished = {
+                controller.navigate(GeckoRoutes.DASHBOARD) {
+                    popUpTo(GeckoRoutes.WELCOME_ONBOARDING) { inclusive = true }
+                    launchSingleTop = true
+                }
+            },
+            onNavigateToCsvImport = {
+                controller.navigate(GeckoRoutes.CSV_IMPORT)
+            }
+        )
     },
     dashboardContent: @Composable (NavHostController) -> Unit = {
         RoutePlaceholderScreen(title = "Dashboard Principal", routeTag = "screen_dashboard")
@@ -253,9 +264,19 @@ fun GeckoNavHost(
     navController: NavHostController,
     featureFlags: ReleaseFeatureFlags,
     modifier: Modifier = Modifier,
-    startDestination: String = GeckoRoutes.DASHBOARD,
-    welcomeOnboardingContent: @Composable (NavHostController) -> Unit = {
-        RoutePlaceholderScreen(title = "Bem-vindo ao Gecko", routeTag = "screen_welcome_onboarding")
+    startDestination: String = GeckoRoutes.WELCOME_ONBOARDING,
+    welcomeOnboardingContent: @Composable (NavHostController) -> Unit = { controller ->
+        WelcomeOnboardingRoute(
+            onOnboardingFinished = {
+                controller.navigate(GeckoRoutes.DASHBOARD) {
+                    popUpTo(GeckoRoutes.WELCOME_ONBOARDING) { inclusive = true }
+                    launchSingleTop = true
+                }
+            },
+            onNavigateToCsvImport = {
+                controller.navigate(GeckoRoutes.CSV_IMPORT)
+            }
+        )
     },
     dashboardContent: @Composable (NavHostController) -> Unit = {
         RoutePlaceholderScreen(title = "Dashboard Principal", routeTag = "screen_dashboard")

@@ -269,7 +269,7 @@
   - Executar `test_app`, `test_instrumented`, `install_app`, `launch_app`, `snapshot_ui` e `get_crash_logs` no celular via `android-build-mcp`.
   - **Teste Visual Manual no Aparelho:** Verificar no celular se a barra de navegação inferior ficou visualmente mais compacta e proporcional, mantendo toque confortável nas 4 abas (`Início`, `Biblioteca`, `Agenda`, `Ajustes`).
 
-### [ ] Etapa 3.2 — Fluxo de Boas-Vindas e Configuração Inicial (`WelcomeOnboardingScreen`)
+### [x] Etapa 3.2 — Fluxo de Boas-Vindas e Configuração Inicial (`WelcomeOnboardingScreen`)
 - **Rastreabilidade:** `RF01`, `RF01.1`, `RF02`, `RF06`, `RF09`, `RNF03`, `TUI-02`, Frames `ONB_01_Welcome`, `ONB_02_Pace`, `ONB_03_Platforms`
 - **Planejamento:**
   - Implementar Wizard de 3 passos com `HorizontalPager`, cabeçalho fixo (`barra de progresso` à esquerda + `Passo X de 3` à direita) e rodapé assimétrico obrigatório a partir do Passo 2 (`← Voltar` peso 1 + CTA ≤ 3 palavras peso 2):
@@ -281,6 +281,11 @@
 - **Teste:**
   - Teste unitário de `OnboardingViewModel` (navegação entre passos, validação de nome/ritmo, modo pular offline, persistência BYOK).
   - Teste Compose UI cobrindo fluxo completo 3 passos, consistência de cabeçalho/rodapé assimétrico, abertura do Bottom Sheet multi-campo e mascaramento `PasswordVisualTransformation` (`TUI-02`).
+  - Execução no aparelho via `android-build-mcp` (`test_app`, `test_instrumented`, `install_app`, `launch_app`, `snapshot_ui`, `get_crash_logs`).
+  - **Teste Visual Manual no Aparelho:**
+    1. **Passo 1 (`ONB_01_Welcome`):** Verificar animação de halo verde pulsante com a mascote Gecko, botão circular de câmera sobre o avatar (`📷`), digitar o nome no campo `"Como você quer ser chamado?"` (confirmando botão `✕` em foco e check `✓` ao perder foco) e tocar em `"Continuar →"`.
+    2. **Passo 2 (`ONB_02_Pace`):** Testar botões `−`/`+` e os 4 chips (`1h 00m`, `1h 30m`, `2h 00m`, `3h 00m+`) conferindo a atualização imediata da caixa `"✦ Nesse ritmo, um jogo de 20h leva ~X dias"`, selecionar um dos 3 estilos (`Rushar`, `Normal`, `Platina` sem texto cortado) e validar o rodapé assimétrico (`← Voltar` + `Continuar →`).
+    3. **Passo 3 (`ONB_03_Platforms`):** Tocar em `+ Configurar` no card IGDB ou Steam para abrir o Bottom Sheet com campos separados mascarados, testar o campo inline `npsso` da PSN, o atalho de CSV e concluir em `"Concluir →"` (ou `"Pular por enquanto ›"`), verificando a transição para o Dashboard com a barra inferior compacta.
 
 ### [ ] Etapa 3.3 — Dashboard Principal (`DashboardScreen`) e Diálogo de Conflito FGS
 - **Rastreabilidade:** `US5.1`, `RF02`, `RF15`, `RF15.1`, `RF17`, `RF21`, `TUI-01`, `TUI-03`, Frames `HOME_01_Dashboard`, `HOME_02_EmptyState`, `MODAL_04_SessionConflict`
