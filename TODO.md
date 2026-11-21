@@ -304,6 +304,20 @@
     2. **Foto de Perfil Imediata:** Tocar no avatar ou ícone `📷`, escolher uma foto da galeria e confirmar que a foto real aparece imediatamente recortada no círculo do perfil.
     3. **Passo 2 com Fonte Grande / Zoom de Tela:** Avançar para o Passo 2 e confirmar que os 4 tempos (`1h 00m`, `1h 30m`, `2h 00m`, `3h 00m+`) e os 3 estilos (`Rushar / Só história`, `Normal / Hist. + Extra`, `Platina / 100% / Tudo`) aparecem inteiros sem reticências (`...`), e que o botão `"← Voltar"` retorna ao Passo 1 preservando nome e foto.
 
+### [x] Etapa 3.2.2 — Ajuste de Teclado (IME Padding / Auto-Scroll) no Passo 1 e Seleção Exata de Chips de Ritmo no Passo 2
+- **Rastreabilidade:** `RF02`, `RNF04`, `.agents/skills/ui-prototyping/SKILL.md` Seções 2–5, Frames `ONB_01_Welcome`, `ONB_02_Pace`
+- **Planejamento:**
+  - Adicionar `.imePadding()` ao container do `WelcomeOnboardingScreen` e rolar automaticamente (`BringIntoViewRequester` / `scrollState.animateScrollTo`) para o campo `"Como você quer ser chamado?"` quando ele recebe foco ou o teclado abre em `OnboardingProfileStep`, evitando que o teclado cubra o campo de inserção.
+  - Corrigir a lógica de seleção dos 4 chips de atalho em `OnboardingPaceStep` e `OnboardingUiState` (`1h 00m`, `1h 30m`, `2h 00m`, `3h 00m`) para usar igualdade estrita (`uiState.dailyAvailabilityMs == presetMs`), de modo que ao incrementar para `3h 30m` (ou qualquer valor fora dos 4 atalhos exatos) o chip de `3h 00m` seja desmarcado.
+- **Implementação:**
+  - Atualizar `WelcomeOnboardingScreen.kt`, `OnboardingProfileStep.kt`, `OnboardingUiState.kt` e `OnboardingPaceStep.kt`.
+- **Teste:**
+  - Atualizar `WelcomeOnboardingScreenTest` comprovando que ao selecionar `3h 00m` (`10_800_000L`) o chip fica selecionado e, ao incrementar para `3h 30m` (`12_600_000L`), o chip `3h 00m` deixa de estar selecionado (`assertIsNotSelected()`).
+  - Execução completa no aparelho via `android-build-mcp` (`list_devices`, `build_app`, `test_app`, `test_instrumented`, `lint`, `install_app`, `launch_app`, `snapshot_ui`, `screenshot`, `get_logs`, `get_crash_logs`).
+  - **Teste Visual Manual no Aparelho:**
+    1. **Teclado no Passo 1:** Tocar no campo `"Como você quer ser chamado?"` e confirmar que a tela sobe automaticamente, mantendo o campo de texto visível acima do teclado virtual.
+    2. **Chips de Ritmo no Passo 2:** Tocar no chip `"3h 00m"` (confirmando que fica selecionado) e em seguida tocar no botão `"+"` para mudar o tempo para `"3h 30m"`, confirmando que o chip `"3h 00m"` lá embaixo deixa de ficar selecionado.
+
 ### [ ] Etapa 3.3 — Dashboard Principal (`DashboardScreen`) e Diálogo de Conflito FGS
 - **Rastreabilidade:** `US5.1`, `RF02`, `RF15`, `RF15.1`, `RF17`, `RF21`, `TUI-01`, `TUI-03`, Frames `HOME_01_Dashboard`, `HOME_02_EmptyState`, `MODAL_04_SessionConflict`
 - **Planejamento:**

@@ -10,6 +10,8 @@ import androidx.compose.ui.test.assertHeightIsAtLeast
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.assertIsNotSelected
+import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.assertWidthIsAtLeast
@@ -136,6 +138,14 @@ class WelcomeOnboardingScreenTest {
         composeTestRule
             .onNodeWithTag("onboarding_pace_simulator_text")
             .assertTextContains("Nesse ritmo, um jogo de 20h leva ~10 dias", substring = true)
+
+        // Altera ritmo para 3h 00m (chip selecionado) e incrementa para 3h 30m (chip 3h 00m deve desmarcar)
+        composeTestRule.onNodeWithTag("onboarding_pace_preset_10800000").performClick()
+        composeTestRule.onNodeWithTag("onboarding_pace_display").assertTextEquals("3h 00m")
+        composeTestRule.onNodeWithTag("onboarding_pace_preset_10800000").assertIsSelected()
+        composeTestRule.onNodeWithTag("onboarding_pace_plus_button").performClick()
+        composeTestRule.onNodeWithTag("onboarding_pace_display").assertTextEquals("3h 30m")
+        composeTestRule.onNodeWithTag("onboarding_pace_preset_10800000").assertIsNotSelected()
 
         // Altera ritmo para 1h 00m e verifica atualização reativa do simulador (~20 dias)
         composeTestRule.onNodeWithTag("onboarding_pace_preset_3600000").performClick()

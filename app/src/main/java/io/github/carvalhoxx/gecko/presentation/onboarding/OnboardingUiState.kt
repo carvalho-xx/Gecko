@@ -83,7 +83,7 @@ data class OnboardingUiState(
             "1h 00m" to 3_600_000L,
             "1h 30m" to 5_400_000L,
             "2h 00m" to 7_200_000L,
-            "3h 00m+" to 10_800_000L
+            "3h 00m" to 10_800_000L
         )
 
         val ANNUAL_GOAL_PRESETS: List<Int> = listOf(12, 24, 36)

@@ -178,7 +178,7 @@ fun OnboardingPaceStep(
                     }
                 }
 
-                // 4 Chips de atalho (1h 00m, 1h 30m, 2h 00m, 3h 00m+) com adaptação dinâmica para fonte grande / zoom de tela
+                // 4 Chips de atalho (1h 00m, 1h 30m, 2h 00m, 3h 00m) com seleção estritamente exata
                 BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
                     val fontScale = LocalDensity.current.fontScale.coerceAtLeast(1f)
                     val effectiveWidthDp = maxWidth / fontScale
@@ -195,14 +195,9 @@ fun OnboardingPaceStep(
                                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                                 ) {
                                     rowPresets.forEach { (label, presetMs) ->
-                                        val isSelected = if (presetMs == 10_800_000L) {
-                                            uiState.dailyAvailabilityMs >= 10_800_000L
-                                        } else {
-                                            uiState.dailyAvailabilityMs == presetMs
-                                        }
                                         SelectableChip(
                                             label = label,
-                                            selected = isSelected,
+                                            selected = uiState.dailyAvailabilityMs == presetMs,
                                             onClick = { onSelectPacePreset(presetMs) },
                                             modifier = Modifier.weight(1f),
                                             testTag = "onboarding_pace_preset_$presetMs"
@@ -217,14 +212,9 @@ fun OnboardingPaceStep(
                             horizontalArrangement = Arrangement.spacedBy(6.dp)
                         ) {
                             OnboardingUiState.PACE_PRESETS_MS.forEach { (label, presetMs) ->
-                                val isSelected = if (presetMs == 10_800_000L) {
-                                    uiState.dailyAvailabilityMs >= 10_800_000L
-                                } else {
-                                    uiState.dailyAvailabilityMs == presetMs
-                                }
                                 SelectableChip(
                                     label = label,
-                                    selected = isSelected,
+                                    selected = uiState.dailyAvailabilityMs == presetMs,
                                     onClick = { onSelectPacePreset(presetMs) },
                                     modifier = Modifier.weight(1f),
                                     testTag = "onboarding_pace_preset_$presetMs"
