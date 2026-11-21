@@ -45,7 +45,7 @@
 - **Teste:**
   - `GameDaoTest.kt` (unitário in-memory para durações > 24h e isolamento Delta Baseline) e `GameDaoInstrumentedTest.kt` (Room in-memory).
 
-### [ ] Etapa 0.2 — Infraestrutura Hilt, Dependências de Plataforma, Feature Flags e Manifesto Android 14+
+### [x] Etapa 0.2 — Infraestrutura Hilt, Dependências de Plataforma, Feature Flags e Manifesto Android 14+
 - **Rastreabilidade:** `RNF01`, `RF21`, `.agents/rules/android_notifications.md`, Seção 2 do Mapeamento UI/UX
 - **Planejamento:**
   - Mapear todas as dependências pendentes no `libs.versions.toml`: `navigation-compose`, `hilt-navigation-compose`, `work-runtime-ktx`, `hilt-work`, `datastore-preferences`, `okhttp`, `retrofit`/`ktor`, `kotlinx-serialization-json`, `coil-compose`, `mockk`, `turbine`, `room-testing`, `work-testing`.

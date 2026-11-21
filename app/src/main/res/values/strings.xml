@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Gecko</string>
+    <string name="fgs_special_use_subtype_description">Cronômetro ativo de sessão de jogo iniciado pelo usuário para registro contínuo offline de tempo jogado.</string>
 </resources>
