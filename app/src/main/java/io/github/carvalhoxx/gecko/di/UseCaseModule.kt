@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.github.carvalhoxx.gecko.core.CoroutineDispatchers
+import io.github.carvalhoxx.gecko.domain.repository.CatalogSyncRepository
 import io.github.carvalhoxx.gecko.domain.repository.GameRepository
 import io.github.carvalhoxx.gecko.domain.repository.PlaythroughRepository
 import io.github.carvalhoxx.gecko.domain.usecase.CalculateSmartScheduleUseCase
@@ -14,7 +15,9 @@ import io.github.carvalhoxx.gecko.domain.usecase.GetVisibleBacklogGamesUseCase
 import io.github.carvalhoxx.gecko.domain.usecase.ImportCsvGamesUseCase
 import io.github.carvalhoxx.gecko.domain.usecase.MergeDeltaBaselineUseCase
 import io.github.carvalhoxx.gecko.domain.usecase.PreviewCsvImportUseCase
+import io.github.carvalhoxx.gecko.domain.usecase.SearchRemoteCatalogUseCase
 import io.github.carvalhoxx.gecko.domain.usecase.SortGamesWithTieBreakerUseCase
+import io.github.carvalhoxx.gecko.domain.usecase.TestByokProviderConnectionUseCase
 import io.github.carvalhoxx.gecko.domain.usecase.TransitionGameStatusUseCase
 import io.github.carvalhoxx.gecko.domain.usecase.UpdatePlayStyleUseCase
 import io.github.carvalhoxx.gecko.domain.usecase.ValidateAndSaveRatingUseCase
@@ -102,4 +105,15 @@ object UseCaseModule {
         playthroughRepository = playthroughRepository,
         dispatchers = dispatchers
     )
+
+    @Provides
+    @Singleton
+    fun provideSearchRemoteCatalogUseCase(catalogSyncRepository: CatalogSyncRepository): SearchRemoteCatalogUseCase =
+        SearchRemoteCatalogUseCase(catalogSyncRepository)
+
+    @Provides
+    @Singleton
+    fun provideTestByokProviderConnectionUseCase(
+        catalogSyncRepository: CatalogSyncRepository
+    ): TestByokProviderConnectionUseCase = TestByokProviderConnectionUseCase(catalogSyncRepository)
 }

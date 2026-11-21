@@ -216,7 +216,7 @@
 - **Teste:**
   - Testes unitários com `MockWebServer`: (a) handshake 200 `/init` → `/find` valida headers idênticos + `hpKey/hpVal` no header e no body; (b) HTTP 403/404 dispara fallback imediato para `HltbFallbackDao` e agenda retry exponencial no WorkManager; (c) conversão de horas decimais HLTB para `Long` ms.
 
-### [ ] Etapa 2.3 — Clientes HTTP BYOK de Catálogo e Sincronização MVP (IGDB, Steam, PSN Inicial e RAWG)
+### [x] Etapa 2.3 — Clientes HTTP BYOK de Catálogo e Sincronização MVP (IGDB, Steam, PSN Inicial e RAWG)
 - **Rastreabilidade:** `US1.1`, `RF01`, `RF01.1`, `RF07`, `RNF01`, `RNF03`
 - **Planejamento:**
   - Implementar clientes descentralizados lendo credenciais exclusivamente do `SecureCredentialsStorage` (e operando em Modo Sem Chaves sem exceções quando ausentes):

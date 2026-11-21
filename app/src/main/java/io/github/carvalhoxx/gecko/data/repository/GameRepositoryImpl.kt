@@ -22,6 +22,12 @@ class GameRepositoryImpl @Inject constructor(private val gameDao: GameDao) : Gam
 
     override suspend fun getGameById(gameId: String): GameItem? = gameDao.getGameById(gameId)?.toDomain()
 
+    override suspend fun findBySteamAppId(steamAppId: Long): GameItem? =
+        gameDao.findBySteamAppId(steamAppId)?.toDomain()
+
+    override suspend fun findByPsnTitleId(psnTitleId: String): GameItem? =
+        gameDao.findByPsnTitleId(psnTitleId)?.toDomain()
+
     override fun observeGamesByStatus(status: GameStatus): Flow<List<GameItem>> =
         gameDao.observeGamesByStatus(status.name).map { list -> list.map { it.toDomain() } }
 

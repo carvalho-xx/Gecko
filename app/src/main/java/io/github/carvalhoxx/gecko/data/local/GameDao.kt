@@ -31,6 +31,12 @@ interface GameDao {
     @Query("SELECT * FROM GAME WHERE id = :gameId")
     suspend fun getGameById(gameId: String): Game?
 
+    @Query("SELECT * FROM GAME WHERE steam_app_id = :steamAppId LIMIT 1")
+    suspend fun findBySteamAppId(steamAppId: Long): Game?
+
+    @Query("SELECT * FROM GAME WHERE psn_title_id = :psnTitleId LIMIT 1")
+    suspend fun findByPsnTitleId(psnTitleId: String): Game?
+
     @Query("SELECT * FROM GAME WHERE id = :gameId")
     fun observeGameById(gameId: String): Flow<Game?>
 

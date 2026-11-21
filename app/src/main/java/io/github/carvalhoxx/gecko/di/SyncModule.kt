@@ -6,7 +6,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.github.carvalhoxx.gecko.data.sync.AndroidForegroundServiceBridge
 import io.github.carvalhoxx.gecko.data.sync.HltbRetryScheduler
+import io.github.carvalhoxx.gecko.data.sync.LibraryDeltaSyncScheduler
 import io.github.carvalhoxx.gecko.data.sync.WorkManagerHltbRetryScheduler
+import io.github.carvalhoxx.gecko.data.sync.WorkManagerLibraryDeltaSyncScheduler
 import io.github.carvalhoxx.gecko.domain.repository.GameRepository
 import io.github.carvalhoxx.gecko.domain.repository.PlaythroughRepository
 import io.github.carvalhoxx.gecko.domain.usecase.ActiveTimerCoordinator
@@ -25,6 +27,10 @@ object SyncModule {
     @Provides
     @Singleton
     fun provideHltbRetryScheduler(impl: WorkManagerHltbRetryScheduler): HltbRetryScheduler = impl
+
+    @Provides
+    @Singleton
+    fun provideLibraryDeltaSyncScheduler(impl: WorkManagerLibraryDeltaSyncScheduler): LibraryDeltaSyncScheduler = impl
 
     @Provides
     @Singleton

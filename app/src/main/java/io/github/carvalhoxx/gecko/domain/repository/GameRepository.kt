@@ -11,6 +11,10 @@ interface GameRepository {
 
     suspend fun getGameById(gameId: String): GameItem?
 
+    suspend fun findBySteamAppId(steamAppId: Long): GameItem?
+
+    suspend fun findByPsnTitleId(psnTitleId: String): GameItem?
+
     fun observeGamesByStatus(status: GameStatus): Flow<List<GameItem>>
 
     /**

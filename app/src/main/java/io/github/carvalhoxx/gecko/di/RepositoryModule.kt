@@ -4,10 +4,14 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.github.carvalhoxx.gecko.data.repository.CatalogSyncRepositoryImpl
+import io.github.carvalhoxx.gecko.data.repository.CredentialsRepositoryImpl
 import io.github.carvalhoxx.gecko.data.repository.GameRepositoryImpl
 import io.github.carvalhoxx.gecko.data.repository.HltbRepositoryImpl
 import io.github.carvalhoxx.gecko.data.repository.PlaythroughRepositoryImpl
 import io.github.carvalhoxx.gecko.data.repository.UserPreferencesRepositoryImpl
+import io.github.carvalhoxx.gecko.domain.repository.CatalogSyncRepository
+import io.github.carvalhoxx.gecko.domain.repository.CredentialsRepository
 import io.github.carvalhoxx.gecko.domain.repository.GameRepository
 import io.github.carvalhoxx.gecko.domain.repository.HltbRepository
 import io.github.carvalhoxx.gecko.domain.repository.PlaythroughRepository
@@ -17,6 +21,14 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
+
+    @Binds
+    @Singleton
+    abstract fun bindCatalogSyncRepository(impl: CatalogSyncRepositoryImpl): CatalogSyncRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindCredentialsRepository(impl: CredentialsRepositoryImpl): CredentialsRepository
 
     @Binds
     @Singleton

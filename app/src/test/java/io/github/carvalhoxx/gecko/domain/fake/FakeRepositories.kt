@@ -22,6 +22,12 @@ class FakeGameRepository(initialGames: List<GameItem> = emptyList()) : GameRepos
 
     override suspend fun getGameById(gameId: String): GameItem? = gamesFlow.value[gameId]
 
+    override suspend fun findBySteamAppId(steamAppId: Long): GameItem? =
+        gamesFlow.value.values.firstOrNull { it.steamAppId == steamAppId }
+
+    override suspend fun findByPsnTitleId(psnTitleId: String): GameItem? =
+        gamesFlow.value.values.firstOrNull { it.psnTitleId == psnTitleId }
+
     override fun observeGamesByStatus(status: GameStatus): Flow<List<GameItem>> =
         gamesFlow.map { map -> map.values.filter { it.status == status } }
 

@@ -138,6 +138,12 @@ class GameDaoTest {
 
         override suspend fun getGameById(gameId: String): Game? = storage.value[gameId]
 
+        override suspend fun findBySteamAppId(steamAppId: Long): Game? =
+            storage.value.values.firstOrNull { it.steam_app_id == steamAppId }
+
+        override suspend fun findByPsnTitleId(psnTitleId: String): Game? =
+            storage.value.values.firstOrNull { it.psn_title_id == psnTitleId }
+
         override fun observeGameById(gameId: String): Flow<Game?> = storage.map { it[gameId] }
 
         override fun observeAllGames(): Flow<List<Game>> = storage.map { it.values.toList() }
