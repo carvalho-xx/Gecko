@@ -21,6 +21,14 @@ stateDiagram-v2
     Pausado --> JogandoAtualmente : Retoma
     Abandonado --> JogandoAtualmente : Tenta Novamente
     
+    note right of Pausado
+        RN-BKL-01: Pausado e Abandonado aparecem no
+        filtro Backlog da LibraryScreen (Backlog Visivel),
+        mas NUNCA entram em sugestoes/planejamento
+        (RF15, RF16, Janela ate o proximo Day One).
+        Sugestoes usam apenas status = BACKLOG (Possuo).
+    end note
+    
     Zerado --> JogandoAtualmente : Replay / New Game+
     
     note right of Zerado
