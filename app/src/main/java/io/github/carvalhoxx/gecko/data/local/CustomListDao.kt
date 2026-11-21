@@ -4,13 +4,17 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CustomListDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertCustomList(customList: CustomListEntity): Long
+
+    @Update
+    suspend fun updateCustomList(customList: CustomListEntity)
 
     @Query("SELECT * FROM CUSTOM_LIST ORDER BY name ASC")
     fun observeAllCustomLists(): Flow<List<CustomListEntity>>

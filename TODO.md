@@ -114,7 +114,7 @@
   - Testes unitários JVM verificando mapeamento completo `Entity <-> Domain`, preservação de `Long` > 24h e invariantes de `BacklogPolicy.VISIBLE` vs `BacklogPolicy.ELIGIBLE`.
   - Verificação estática (teste/regra de arquitetura) garantindo zero imports `android.*` / `androidx.*` em `domain/`.
 
-### [ ] Etapa 1.2 — Máquina de Estados Baseada em Eventos, Backlog Elegível e Delta Baseline
+### [x] Etapa 1.2 — Máquina de Estados Baseada em Eventos, Backlog Elegível e Delta Baseline
 - **Rastreabilidade:** `US1.3`, `US2.1`, `RF07`, `RF10`, `RF20`, `RN-BKL-01`, `Diagrama de Máquina de Estados.txt`
 - **Planejamento:**
   - Mapear todas as transições permitidas e efeitos colaterais:

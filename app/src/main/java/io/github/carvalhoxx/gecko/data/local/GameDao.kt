@@ -3,9 +3,8 @@ package io.github.carvalhoxx.gecko.data.local
 import androidx.room.ColumnInfo
 import androidx.room.Dao
 import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 data class GameStatusCount(
@@ -19,10 +18,14 @@ data class GameStatusCount(
 @Dao
 interface GameDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    /**
+     * Usa @Upsert (INSERT + fallback UPDATE) em vez de REPLACE para nunca disparar
+     * ON DELETE CASCADE em PLAYTHROUGH, JOURNAL_ENTRY e tabelas N:N ao atualizar um jogo.
+     */
+    @Upsert
     suspend fun insertGame(game: Game)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Upsert
     suspend fun insertGames(games: List<Game>)
 
     @Query("SELECT * FROM GAME WHERE id = :gameId")
