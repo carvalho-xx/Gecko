@@ -170,7 +170,7 @@
 - **Teste:**
   - Testes unitários cobrindo limites de nota (`0.00`, `8.75`, `10.00`, `11.00`, inválidos `10.25`/`-0.1`/`11.5`), desempate em 3 níveis e cálculo de KPIs com biblioteca vazia e populada.
 
-### [ ] Etapa 1.5 — Motor de Ingestão e Sanitização CSV Resiliente (RFC 4180 + Regex)
+### [x] Etapa 1.5 — Motor de Ingestão e Sanitização CSV Resiliente (RFC 4180 + Regex)
 - **Rastreabilidade:** `US4.1`, `RF09`, `RNF07`, `RNF08`, `TU-03`, `TU-04`, `docs/assets/jogos zerados.csv`
 - **Planejamento:**
   - Projetar parser de máquina de estados RFC 4180 em Kotlin puro (proibido `String.split(",")`) com remoção de BOM UTF-8, suporte a vírgulas internas entre aspas e aspas dobradas (`""`).
