@@ -23,6 +23,14 @@
 - **UDF Visual Exclusivo:** Nunca exibir cursor `|` junto com `✓`; nunca exibir botão `Validar` junto com estado `✓ Conectado`; credenciais multi-campo (IGDB, Steam, RetroAchievements) em Modal Bottom Sheet; apenas chave única (`npsso`, RAWG) inline.
 - **Testabilidade:** `Modifier.testTag(...)` nos nós acionáveis; campos BYOK com `PasswordVisualTransformation()` testados via `onNodeWithTag` + `performTextInput()` (proibido `onNodeWithText` para segredos).
 
+### Protocolo Obrigatório de Ferramentas MCP (`room-sqlite-inspector` e `android-build-mcp`)
+1. **`room-sqlite-inspector` (Obrigatório em toda etapa com Room/SQLite/DAOs/Migrations):**
+   - Sempre validar schema real, integridade de colunas temporais `INTEGER` (`Long` ms), queries explícitas (ex.: `RN-BKL-01`) e planos de execução (`EXPLAIN QUERY PLAN`) via `schema`, `table_info`, `query` e `explain`.
+   - Toda mutação em tabelas pai com filhos `ForeignKey.CASCADE` (`GAME`, `PLAYTHROUGH`, `PLATFORM`, `CUSTOM_LIST`) deve usar `@Upsert` ou `@Insert(ABORT)` + `@Update` (proibido `OnConflictStrategy.REPLACE` em tabelas pai) e ser validada contra SQLite real em teste instrumentado.
+2. **`android-build-mcp` (Obrigatório em builds, testes e validação em dispositivo/emulador):**
+   - Usar `list_devices`, `build_app`, `test_app`, `test_instrumented` e `lint` para compilar e executar testes unitários e instrumentados no dispositivo conectado.
+   - A partir da **Fase 2 (FGS/WorkManager)** e **Fase 3 (UI Jetpack Compose)**, usar também `install_app`, `launch_app`, `snapshot_ui`, `screenshot`, `get_logs` e `get_crash_logs` para inspecionar telas, estados visuais e ausência de crashes diretamente no aparelho.
+
 ### Fontes Documentais Consolidadas
 - Requisitos: `docs/requirements/SRS_Gecko_Android_v2.1_Padrao_Engenharia.docx` e `docs/requirements/Planejamento Ágil e Backlog - Projeto Gecko.docx`
 - Arquitetura e Dados: `docs/architecture/DOCUMENTO DE ARQUITETURA DE SOFTWARE (DAS).docx`, `docs/architecture/DER.txt`, `docs/architecture/Diagrama de Máquina de Estados.txt`
