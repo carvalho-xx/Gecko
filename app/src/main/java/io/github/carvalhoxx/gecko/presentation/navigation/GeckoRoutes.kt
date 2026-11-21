@@ -56,19 +56,19 @@ enum class GeckoTopLevelDestination(
     LIBRARY(
         route = GeckoRoutes.LIBRARY,
         label = "Biblioteca",
-        iconGlyph = "▤",
+        iconGlyph = "▦",
         testTag = "nav_tab_library"
     ),
     SCHEDULER(
         route = GeckoRoutes.SCHEDULER,
         label = "Agenda",
-        iconGlyph = "⏱",
+        iconGlyph = "◈",
         testTag = "nav_tab_scheduler"
     ),
     ANALYTICS(
         route = GeckoRoutes.ANALYTICS,
         label = "Análises",
-        iconGlyph = "📊",
+        iconGlyph = "◔",
         testTag = "nav_tab_analytics",
         requiresV11 = true
     ),

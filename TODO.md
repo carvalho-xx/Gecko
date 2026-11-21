@@ -37,6 +37,8 @@
    - Registrar o erro/ajuste como a **próxima etapa imediata no `TODO.md`** seguindo rigorosamente o mesmo formato padrão (`Rastreabilidade`, `Planejamento`, `Implementação`, `Teste`) para execução apenas quando o usuário avançar para a próxima etapa.
 5. **Commit Obrigatório por Etapa:**
    - Ao final de toda etapa concluída e validada, realizar obrigatoriamente um `git commit` atômico com mensagem Conventional Commits antes de encerrar o turno.
+6. **`figcraft-designer` (Obrigatório em toda etapa de UI/UX):**
+   - Tudo que for parte de UI deve obrigatoriamente consultar e inspecionar o protótipo `docs/ui_ux/DashboardScreen_Prototype.figcraft` via MCP `figcraft-designer` (`open_file`, `inspect_document`, `get_node`, `screenshot`) para confirmar o layout, medidas, cores, tipografia e estética antes e durante a implementação.
 
 ### Fontes Documentais Consolidadas
 - Requisitos: `docs/requirements/SRS_Gecko_Android_v2.1_Padrao_Engenharia.docx` e `docs/requirements/Planejamento Ágil e Backlog - Projeto Gecko.docx`
@@ -256,8 +258,8 @@
   - Execução no aparelho via `android-build-mcp` (`test_app`, `test_instrumented`, `install_app`, `launch_app`, `snapshot_ui`, `get_crash_logs`).
   - **Teste Visual Manual no Aparelho:** Abrir o app Gecko, alternar entre as 4 abas da barra inferior (`Início`, `Biblioteca`, `Agenda`, `Ajustes`) e validar contraste OLED Dark (`#0D1210`) e card Tonal Elevation (`#18201C`).
 
-### [ ] Etapa 3.1.1 — Ajuste de Densidade e Altura Compacta da Bottom Navigation Bar
-- **Rastreabilidade:** `RNF04`, `.agents/skills/ui-prototyping/SKILL.md` Seção 2 e 3 (Grelha 8pt, Alvos de Toque `>= 48dp` e Densidade Vertical)
+### [x] Etapa 3.1.1 — Ajuste de Densidade e Altura Compacta da Bottom Navigation Bar
+- **Rastreabilidade:** `RNF04`, `.agents/skills/ui-prototyping/SKILL.md` Seção 2 e 3, `DashboardScreen_Prototype.figcraft` (Frame `HOME_01_Dashboard` id `192` -> `BottomNavClean1` id `270`)
 - **Planejamento:**
   - Reduzir a altura vertical e o espaçamento interno da `GeckoBottomNavigationBar` em `presentation/navigation/GeckoNavHost.kt` (substituindo a altura padrão exagerada do `NavigationBar` M3 por container compacto na grelha de 8pt, ex.: `56.dp`–`64.dp` + `windowInsets` enxutos e ícone `labelMedium`/`bodyMedium`), preservando área mínima clicável de `48x48dp` por aba (`[A11Y: TOUCH_TARGET_MIN(48dp)]`) e no mínimo `24dp` de respiro para o conteúdo.
 - **Implementação:**

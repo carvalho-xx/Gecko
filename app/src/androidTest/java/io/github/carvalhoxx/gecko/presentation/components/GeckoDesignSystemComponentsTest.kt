@@ -185,16 +185,37 @@ class GeckoDesignSystemComponentsTest {
             }
         }
 
-        // MVP v1.0: 4 abas visíveis, Analytics oculta
-        composeTestRule.onNodeWithTag("nav_tab_dashboard").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("nav_tab_library").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("nav_tab_scheduler").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("nav_tab_settings").assertIsDisplayed()
+        // MVP v1.0: 4 abas visíveis, compactas (>= 48dp de toque) e Analytics oculta
+        composeTestRule
+            .onNodeWithTag("nav_tab_dashboard")
+            .assertIsDisplayed()
+            .assertIsSelected()
+            .assertWidthIsAtLeast(48.dp)
+            .assertHeightIsAtLeast(48.dp)
+        composeTestRule
+            .onNodeWithTag("nav_tab_library")
+            .assertIsDisplayed()
+            .assertWidthIsAtLeast(48.dp)
+            .assertHeightIsAtLeast(48.dp)
+        composeTestRule
+            .onNodeWithTag("nav_tab_scheduler")
+            .assertIsDisplayed()
+            .assertWidthIsAtLeast(48.dp)
+            .assertHeightIsAtLeast(48.dp)
+        composeTestRule
+            .onNodeWithTag("nav_tab_settings")
+            .assertIsDisplayed()
+            .assertWidthIsAtLeast(48.dp)
+            .assertHeightIsAtLeast(48.dp)
         composeTestRule.onNodeWithTag("nav_tab_analytics").assertDoesNotExist()
 
         // Expansão v1.1: 5ª aba Analytics habilitada
         flags = ReleaseFeatureFlags.EXPANSION_V1_1
         composeTestRule.waitForIdle()
-        composeTestRule.onNodeWithTag("nav_tab_analytics").assertIsDisplayed()
+        composeTestRule
+            .onNodeWithTag("nav_tab_analytics")
+            .assertIsDisplayed()
+            .assertWidthIsAtLeast(48.dp)
+            .assertHeightIsAtLeast(48.dp)
     }
 }

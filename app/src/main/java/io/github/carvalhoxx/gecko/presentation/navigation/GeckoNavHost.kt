@@ -1,22 +1,41 @@
 package io.github.carvalhoxx.gecko.presentation.navigation
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -28,14 +47,20 @@ import androidx.navigation.navArgument
 import io.github.carvalhoxx.gecko.core.ReleaseFeatureFlags
 import io.github.carvalhoxx.gecko.presentation.components.GeckoSurfaceCard
 import io.github.carvalhoxx.gecko.ui.theme.GeckoBackground
-import io.github.carvalhoxx.gecko.ui.theme.GeckoPrimary
-import io.github.carvalhoxx.gecko.ui.theme.GeckoPrimaryContainer
-import io.github.carvalhoxx.gecko.ui.theme.GeckoSurface
+import io.github.carvalhoxx.gecko.ui.theme.GeckoBottomNavActiveContent
+import io.github.carvalhoxx.gecko.ui.theme.GeckoBottomNavActivePill
+import io.github.carvalhoxx.gecko.ui.theme.GeckoBottomNavBg
+import io.github.carvalhoxx.gecko.ui.theme.GeckoBottomNavBorder
+import io.github.carvalhoxx.gecko.ui.theme.GeckoBottomNavInactiveContent
 import io.github.carvalhoxx.gecko.ui.theme.GeckoTextPrimary
 import io.github.carvalhoxx.gecko.ui.theme.GeckoTextSecondary
 
 /**
- * Barra de navegação inferior M3 OLED Dark adaptativa (4 abas no MVP v1.0, 5 abas na v1.1).
+ * Barra de navegação inferior compacta alinhada ao protótipo FigCraft (`BottomNavClean1`, id 270):
+ * - Container `#0B0F0D` com divisor superior `1.dp` `#18221E`.
+ * - Altura útil de conteúdo de `56.dp` (+ `navigationBarsPadding()`), evitando excesso vertical.
+ * - Pílula ativa `56x28.dp` (`cornerRadius = 14.dp`, `#10291F`), ícone `17.sp` e rótulo `11.sp` (`#34D399` ativo / `#8E9E96` inativo).
+ * - Alvo de toque mínimo garantido `>= 48x48.dp` por aba.
  */
 @Composable
 fun GeckoBottomNavigationBar(
@@ -46,38 +71,88 @@ fun GeckoBottomNavigationBar(
 ) {
     val destinations = GeckoRoutes.topLevelDestinations(featureFlags)
 
-    NavigationBar(
-        modifier = modifier.testTag("gecko_bottom_nav_bar"),
-        containerColor = GeckoSurface,
-        tonalElevation = 3.dp
+    Surface(
+        modifier = modifier
+            .fillMaxWidth()
+            .testTag("gecko_bottom_nav_bar"),
+        color = GeckoBottomNavBg,
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp
     ) {
-        destinations.forEach { destination ->
-            val selected = currentRoute == destination.route
-            NavigationBarItem(
-                selected = selected,
-                onClick = { onNavigateToDestination(destination) },
-                modifier = Modifier.testTag(destination.testTag),
-                icon = {
-                    Text(
-                        text = destination.iconGlyph,
-                        style = MaterialTheme.typography.titleMedium,
-                        color = if (selected) GeckoPrimary else GeckoTextSecondary
-                    )
-                },
-                label = {
-                    Text(
-                        text = destination.label,
-                        style = MaterialTheme.typography.labelSmall
-                    )
-                },
-                colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = GeckoPrimary,
-                    selectedTextColor = GeckoPrimary,
-                    indicatorColor = GeckoPrimaryContainer,
-                    unselectedIconColor = GeckoTextSecondary,
-                    unselectedTextColor = GeckoTextSecondary
-                )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .navigationBarsPadding()
+        ) {
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = GeckoBottomNavBorder
             )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .selectableGroup()
+                    .padding(horizontal = 8.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                destinations.forEach { destination ->
+                    val isSelected = currentRoute == destination.route
+                    val contentColor = if (isSelected) {
+                        GeckoBottomNavActiveContent
+                    } else {
+                        GeckoBottomNavInactiveContent
+                    }
+                    val pillColor = if (isSelected) {
+                        GeckoBottomNavActivePill
+                    } else {
+                        Color.Transparent
+                    }
+
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .defaultMinSize(minWidth = 48.dp, minHeight = 48.dp)
+                            .clip(RoundedCornerShape(12.dp))
+                            .clickable { onNavigateToDestination(destination) }
+                            .semantics(mergeDescendants = true) {
+                                this.role = Role.Tab
+                                this.selected = isSelected
+                                this.contentDescription = destination.label
+                            }
+                            .testTag(destination.testTag),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(width = 56.dp, height = 28.dp)
+                                .background(
+                                    color = pillColor,
+                                    shape = RoundedCornerShape(14.dp)
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = destination.iconGlyph,
+                                fontSize = if (isSelected) 18.sp else 17.sp,
+                                lineHeight = 20.sp,
+                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                                color = contentColor
+                            )
+                        }
+                        Text(
+                            text = destination.label,
+                            fontSize = 11.sp,
+                            lineHeight = 13.sp,
+                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                            color = contentColor,
+                            modifier = Modifier.padding(top = 2.dp)
+                        )
+                    }
+                }
+            }
         }
     }
 }
