@@ -203,7 +203,7 @@
   - **`TI-02` (Instrumentado):** Ciclo iniciar → pausar → retomar → concluir sessão + simulação de sync remoto simultâneo comprovando que `local_logged_time_ms` é incrementado sem sofrer sobrescrita por `platform_reported_time_ms`.
   - Testes unitários de `ActiveTimerCoordinator`: detecção de conflito Jogo A vs Jogo B, troca atômica preservando saldo do Jogo A e recuperação de sessão interrompida a partir de `current_session_start_ms`.
 
-### [ ] Etapa 2.2 — Cliente HTTP Resiliente HowLongToBeat (HLTB) com Circuit Breaker e Fallback Local
+### [x] Etapa 2.2 — Cliente HTTP Resiliente HowLongToBeat (HLTB) com Circuit Breaker e Fallback Local
 - **Rastreabilidade:** `US1.2`, `RF01.1`, `RF05`, `RNF01`, `Fluxo de Handshake Anti-Bot do HLTB.txt`, `Pesquisa de Integrações de API.docx`
 - **Planejamento:**
   - Implementar fluxo de 2 etapas:

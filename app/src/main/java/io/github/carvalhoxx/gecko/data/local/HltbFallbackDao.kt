@@ -4,12 +4,16 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Upsert
 
 @Dao
 interface HltbFallbackDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAll(entries: List<HltbFallbackEntity>)
+
+    @Upsert
+    suspend fun upsertEntry(entry: HltbFallbackEntity)
 
     @Query("SELECT * FROM HLTB_FALLBACK WHERE normalized_title = :normalizedTitle LIMIT 1")
     suspend fun findByNormalizedTitle(normalizedTitle: String): HltbFallbackEntity?
