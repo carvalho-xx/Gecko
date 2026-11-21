@@ -287,6 +287,23 @@
     2. **Passo 2 (`ONB_02_Pace`):** Testar botões `−`/`+` e os 4 chips (`1h 00m`, `1h 30m`, `2h 00m`, `3h 00m+`) conferindo a atualização imediata da caixa `"✦ Nesse ritmo, um jogo de 20h leva ~X dias"`, selecionar um dos 3 estilos (`Rushar`, `Normal`, `Platina` sem texto cortado) e validar o rodapé assimétrico (`← Voltar` + `Continuar →`).
     3. **Passo 3 (`ONB_03_Platforms`):** Tocar em `+ Configurar` no card IGDB ou Steam para abrir o Bottom Sheet com campos separados mascarados, testar o campo inline `npsso` da PSN, o atalho de CSV e concluir em `"Concluir →"` (ou `"Pular por enquanto ›"`), verificando a transição para o Dashboard com a barra inferior compacta.
 
+### [x] Etapa 3.2.1 — Correções de Layout, Fluxo Guiado sem Swipe, Avatar Real e Tipografia Dinâmica no Onboarding
+- **Rastreabilidade:** `RF01`, `RF02`, `RF06`, `RNF04`, `.agents/skills/ui-prototyping/SKILL.md` Seções 2–5, Frames `ONB_01_Welcome`, `ONB_02_Pace`, `ONB_03_Platforms`
+- **Planejamento:**
+  - Eliminar a duplicação de `statusBarsPadding()` / `navigationBarsPadding()` entre `GeckoAppScaffold` e `WelcomeOnboardingScreen` usando `.consumeWindowInsets(innerPadding)` no `GeckoNavHost`.
+  - Desabilitar o swipe manual entre etapas (`userScrollEnabled = false` no `HorizontalPager`) e bloquear o botão `"Continuar →"` no Passo 1 enquanto o nome do perfil não for preenchido (`uiState.isNameValid`), garantindo progressão exclusivamente pelos botões `"Continuar →"` e `"← Voltar"`.
+  - Renderizar a imagem real selecionada no `AvatarPhotoPicker` na hora via `AsyncImage` (Coil) com `ContentScale.Crop` e persistência de permissão (`takePersistableUriPermission`), com badge de câmera discreto (`34.dp` visual dentro de área de toque `48x48dp`).
+  - Tornar `SelectableChip` e `OnboardingPaceStep` dinâmicos para fontes grandes e zoom de tela (`AutoFitSingleLineText` via `onTextLayout` + grade responsiva `2x2` via `BoxWithConstraints` e `LocalDensity.current.fontScale` para os 4 presets de ritmo diário), eliminando truncamentos (`"1h ..."`, `"Hist. + E..."`).
+- **Implementação:**
+  - Atualizar `GeckoNavHost.kt`, `WelcomeOnboardingScreen.kt`, `OnboardingViewModel.kt`, `OnboardingProfileStep.kt`, `OnboardingPaceStep.kt`, `OnboardingConnectionsStep.kt` e `SelectableChip.kt`.
+- **Teste:**
+  - Atualizar e executar `OnboardingViewModelTest` e `WelcomeOnboardingScreenTest` (verificando bloqueio de avanço no Passo 1 sem nome preenchido e habilitação após digitar nome).
+  - Execução completa no aparelho via `android-build-mcp` (`list_devices`, `build_app`, `test_app`, `test_instrumented`, `lint`, `install_app`, `launch_app`, `snapshot_ui`, `screenshot`, `get_logs`, `get_crash_logs`).
+  - **Teste Visual Manual no Aparelho:**
+    1. **Cabeçalho no Topo e Bloqueio do Passo 1:** Confirmar que `"Passo 1 de 3"` aparece próximo ao topo (sem buraco abaixo da status bar), que não é possível arrastar para o lado como stories e que o botão `"Continuar →"` inicia desabilitado até digitar o nome.
+    2. **Foto de Perfil Imediata:** Tocar no avatar ou ícone `📷`, escolher uma foto da galeria e confirmar que a foto real aparece imediatamente recortada no círculo do perfil.
+    3. **Passo 2 com Fonte Grande / Zoom de Tela:** Avançar para o Passo 2 e confirmar que os 4 tempos (`1h 00m`, `1h 30m`, `2h 00m`, `3h 00m+`) e os 3 estilos (`Rushar / Só história`, `Normal / Hist. + Extra`, `Platina / 100% / Tudo`) aparecem inteiros sem reticências (`...`), e que o botão `"← Voltar"` retorna ao Passo 1 preservando nome e foto.
+
 ### [ ] Etapa 3.3 — Dashboard Principal (`DashboardScreen`) e Diálogo de Conflito FGS
 - **Rastreabilidade:** `US5.1`, `RF02`, `RF15`, `RF15.1`, `RF17`, `RF21`, `TUI-01`, `TUI-03`, Frames `HOME_01_Dashboard`, `HOME_02_EmptyState`, `MODAL_04_SessionConflict`
 - **Planejamento:**

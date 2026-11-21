@@ -4,7 +4,6 @@ import io.github.carvalhoxx.gecko.core.ReleaseFeatureFlags
 import io.github.carvalhoxx.gecko.domain.model.ByokConnectionState
 import io.github.carvalhoxx.gecko.domain.model.ByokProvider
 import io.github.carvalhoxx.gecko.domain.model.ByokProviderStatus
-import io.github.carvalhoxx.gecko.domain.model.HltbEstimate
 import io.github.carvalhoxx.gecko.domain.model.PlayStyle
 import io.github.carvalhoxx.gecko.domain.model.RemoteCatalogGame
 import io.github.carvalhoxx.gecko.domain.model.UserPaceSettings
@@ -54,14 +53,13 @@ class OnboardingViewModelTest {
         Dispatchers.resetMain()
     }
 
-    private fun createViewModel(
-        flags: ReleaseFeatureFlags = ReleaseFeatureFlags.MVP_V1_0
-    ): OnboardingViewModel = OnboardingViewModel(
-        userPreferencesRepository = fakePreferencesRepo,
-        credentialsRepository = fakeCredentialsRepo,
-        testByokProviderConnectionUseCase = TestByokProviderConnectionUseCase(fakeCatalogSyncRepo),
-        releaseFeatureFlags = flags
-    )
+    private fun createViewModel(flags: ReleaseFeatureFlags = ReleaseFeatureFlags.MVP_V1_0): OnboardingViewModel =
+        OnboardingViewModel(
+            userPreferencesRepository = fakePreferencesRepo,
+            credentialsRepository = fakeCredentialsRepo,
+            testByokProviderConnectionUseCase = TestByokProviderConnectionUseCase(fakeCatalogSyncRepo),
+            releaseFeatureFlags = flags
+        )
 
     @Test
     fun `navigates across 3 steps, updates pace simulator, and completes onboarding`() = runTest {
@@ -69,6 +67,10 @@ class OnboardingViewModelTest {
 
         assertEquals(0, viewModel.uiState.value.currentStep)
         assertFalse(viewModel.uiState.value.isAnnualGoalEnabled)
+
+        // Passo 1 bloqueia avanço enquanto o nome estiver vazio
+        viewModel.onNextStep()
+        assertEquals(0, viewModel.uiState.value.currentStep)
 
         // Passo 1: define nome e avança para Passo 2
         viewModel.onNameChange("Carvs")
@@ -233,16 +235,9 @@ private class FakeOnboardingCredentialsRepository : CredentialsRepository {
 }
 
 private class FakeOnboardingCatalogSyncRepository : CatalogSyncRepository {
-    override suspend fun searchCatalog(query: String, limit: Int): List<RemoteCatalogGame> = emptyList()
+    override suspend fun searchCatalog(query: String): List<RemoteCatalogGame> = emptyList()
 
-    override suspend fun fetchHltbEstimate(gameTitle: String): HltbEstimate = HltbEstimate(
-        mainStoryMs = 36_000_000L,
-        mainSidesMs = 54_000_000L,
-        completionistMs = 72_000_000L,
-        isFromFallback = true
-    )
-
-    override suspend fun syncPlatformPlaytimeDelta(): Int = 0
+    override suspend fun syncPlatformPlaytimes(): Result<Int> = Result.success(0)
 
     override suspend fun testProviderConnection(provider: ByokProvider): ByokProviderStatus =
         ByokProviderStatus(provider = provider, state = ByokConnectionState.CONNECTED)

@@ -8,6 +8,8 @@ import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertHeightIsAtLeast
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.assertWidthIsAtLeast
@@ -104,19 +106,21 @@ class WelcomeOnboardingScreenTest {
             }
         }
 
-        // Passo 1 de 3: Cabeçalho fixo presente, botão Voltar ausente, Avatar picker >= 48dp
+        // Passo 1 de 3: Cabeçalho fixo presente, botão Voltar ausente, botão Continuar desabilitado até preencher nome, Avatar picker >= 48dp
         composeTestRule.onNodeWithTag("onboarding_step_counter").assertTextEquals("Passo 1 de 3")
         composeTestRule.onNodeWithTag("onboarding_back_button").assertDoesNotExist()
+        composeTestRule.onNodeWithTag("onboarding_next_button").assertIsNotEnabled()
         composeTestRule
             .onNodeWithTag("onboarding_avatar_picker_button")
             .assertIsDisplayed()
             .assertWidthIsAtLeast(48.dp)
             .assertHeightIsAtLeast(48.dp)
 
-        // Preenche nome no Passo 1 (em foco: exibe botão limpar X e não exibe ✓)
+        // Preenche nome no Passo 1 (em foco: exibe botão limpar X, não exibe ✓, e habilita botão Continuar)
         composeTestRule.onNodeWithTag("onboarding_name_field").performTextInput("Carvs")
         composeTestRule.onNodeWithTag("onboarding_name_clear_button").assertIsDisplayed()
         composeTestRule.onNodeWithTag("onboarding_name_valid_icon").assertDoesNotExist()
+        composeTestRule.onNodeWithTag("onboarding_next_button").assertIsEnabled()
 
         // Avança para Passo 2 de 3
         composeTestRule.onNodeWithTag("onboarding_next_button").performClick()

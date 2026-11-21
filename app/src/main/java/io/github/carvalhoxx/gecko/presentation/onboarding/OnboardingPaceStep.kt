@@ -3,6 +3,7 @@ package io.github.carvalhoxx.gecko.presentation.onboarding
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,8 +23,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.carvalhoxx.gecko.domain.model.PlayStyle
@@ -61,7 +64,7 @@ fun OnboardingPaceStep(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = 16.dp)
             .testTag("onboarding_step_2_pace"),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
@@ -94,7 +97,7 @@ fun OnboardingPaceStep(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 16.dp),
+                    .padding(horizontal = 16.dp, vertical = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
@@ -102,7 +105,8 @@ fun OnboardingPaceStep(
                     text = "Tempo médio que você joga por dia",
                     color = Color(0xFF9CA8A2),
                     fontSize = 12.sp,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    textAlign = TextAlign.Center
                 )
 
                 Row(
@@ -130,19 +134,26 @@ fun OnboardingPaceStep(
                         }
                     }
 
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 8.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         Text(
                             text = uiState.formattedDailyPace,
                             color = PaceEmerald,
-                            fontSize = 36.sp,
+                            fontSize = 34.sp,
                             fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center,
                             modifier = Modifier.testTag("onboarding_pace_display")
                         )
                         Text(
                             text = uiState.formattedWeeklyPaceSubtitle,
                             color = Color(0xFFE3E3E3),
                             fontSize = 12.sp,
-                            fontWeight = FontWeight.Medium
+                            fontWeight = FontWeight.Medium,
+                            textAlign = TextAlign.Center
                         )
                     }
 
@@ -167,24 +178,59 @@ fun OnboardingPaceStep(
                     }
                 }
 
-                // 4 Chips de atalho (1h 00m, 1h 30m, 2h 00m, 3h 00m+)
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    OnboardingUiState.PACE_PRESETS_MS.forEach { (label, presetMs) ->
-                        val isSelected = if (presetMs == 10_800_000L) {
-                            uiState.dailyAvailabilityMs >= 10_800_000L
-                        } else {
-                            uiState.dailyAvailabilityMs == presetMs
+                // 4 Chips de atalho (1h 00m, 1h 30m, 2h 00m, 3h 00m+) com adaptação dinâmica para fonte grande / zoom de tela
+                BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+                    val fontScale = LocalDensity.current.fontScale.coerceAtLeast(1f)
+                    val effectiveWidthDp = maxWidth / fontScale
+                    val useTwoRowsGrid = effectiveWidthDp < 255.dp
+
+                    if (useTwoRowsGrid) {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            OnboardingUiState.PACE_PRESETS_MS.chunked(2).forEach { rowPresets ->
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                ) {
+                                    rowPresets.forEach { (label, presetMs) ->
+                                        val isSelected = if (presetMs == 10_800_000L) {
+                                            uiState.dailyAvailabilityMs >= 10_800_000L
+                                        } else {
+                                            uiState.dailyAvailabilityMs == presetMs
+                                        }
+                                        SelectableChip(
+                                            label = label,
+                                            selected = isSelected,
+                                            onClick = { onSelectPacePreset(presetMs) },
+                                            modifier = Modifier.weight(1f),
+                                            testTag = "onboarding_pace_preset_$presetMs"
+                                        )
+                                    }
+                                }
+                            }
                         }
-                        SelectableChip(
-                            label = label,
-                            selected = isSelected,
-                            onClick = { onSelectPacePreset(presetMs) },
-                            modifier = Modifier.weight(1f),
-                            testTag = "onboarding_pace_preset_$presetMs"
-                        )
+                    } else {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            OnboardingUiState.PACE_PRESETS_MS.forEach { (label, presetMs) ->
+                                val isSelected = if (presetMs == 10_800_000L) {
+                                    uiState.dailyAvailabilityMs >= 10_800_000L
+                                } else {
+                                    uiState.dailyAvailabilityMs == presetMs
+                                }
+                                SelectableChip(
+                                    label = label,
+                                    selected = isSelected,
+                                    onClick = { onSelectPacePreset(presetMs) },
+                                    modifier = Modifier.weight(1f),
+                                    testTag = "onboarding_pace_preset_$presetMs"
+                                )
+                            }
+                        }
                     }
                 }
 
@@ -232,7 +278,7 @@ fun OnboardingPaceStep(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 16.dp),
+                    .padding(horizontal = 16.dp, vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
@@ -251,7 +297,7 @@ fun OnboardingPaceStep(
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     PlayStyleCardOption(
                         title = "Rushar",
@@ -296,7 +342,7 @@ fun OnboardingPaceStep(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp, vertical = 16.dp),
+                        .padding(horizontal = 16.dp, vertical = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
@@ -315,7 +361,7 @@ fun OnboardingPaceStep(
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
                         OnboardingUiState.ANNUAL_GOAL_PRESETS.forEach { target ->
                             SelectableChip(

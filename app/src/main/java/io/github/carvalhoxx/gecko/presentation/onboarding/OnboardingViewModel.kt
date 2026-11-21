@@ -93,7 +93,8 @@ class OnboardingViewModel @Inject constructor(
     }
 
     fun onSelectDailyPacePreset(dailyAvailabilityMs: Long) {
-        if (ByokCredentialValidator.validateDailyAvailabilityMs(dailyAvailabilityMs) is CredentialValidationResult.Valid) {
+        val validation = ByokCredentialValidator.validateDailyAvailabilityMs(dailyAvailabilityMs)
+        if (validation is CredentialValidationResult.Valid) {
             _uiState.update {
                 it.copy(
                     dailyAvailabilityMs = dailyAvailabilityMs.coerceIn(
@@ -122,6 +123,9 @@ class OnboardingViewModel @Inject constructor(
 
     fun onNextStep() {
         val current = _uiState.value
+        if (current.currentStep == 0 && !current.isNameValid) {
+            return
+        }
         if (current.currentStep < OnboardingUiState.TOTAL_STEPS - 1) {
             viewModelScope.launch {
                 persistProfileAndPace(current)
@@ -209,11 +213,7 @@ class OnboardingViewModel @Inject constructor(
         }
     }
 
-    fun onSaveMultiFieldCredentials(
-        provider: ByokProvider,
-        primaryValue: String,
-        secondaryValue: String
-    ) {
+    fun onSaveMultiFieldCredentials(provider: ByokProvider, primaryValue: String, secondaryValue: String) {
         val p1 = primaryValue.trim()
         val p2 = secondaryValue.trim()
 

@@ -71,3 +71,18 @@ Affordance e Alvos de Toque (Acessibilidade):
 
 Roteamento de Skills (Carregamento Obrigatório por Contexto)
 - Criação, revisão ou refatoração de ecrãs, protótipos (FigCraft/Figma) e componentes Jetpack Compose: leia obrigatoriamente `.agents/skills/ui-prototyping/SKILL.md` antes de gerar a resposta.
+
+PROTOCOLO OBRIGATÓRIO DE TESTES E FERRAMENTAS MCP (TODO.md - NUNCA OMITIR)
+
+1. `android-build-mcp` e Execução Padrão no Celular Conectado (Obrigatório ao fim de toda etapa/correção):
+   - Usar `list_devices`, `build_app`, `test_app`, `test_instrumented` e `lint` para compilar e executar testes unitários e instrumentados diretamente no dispositivo físico conectado via ADB/Wi-Fi.
+   - Executar obrigatoriamente `install_app`, `launch_app`, `snapshot_ui`, `screenshot`, `get_logs` e `get_crash_logs` ao fim de cada etapa para enviar o APK atualizado ao celular e confirmar ausência de crashes.
+2. `room-sqlite-inspector` (Obrigatório em toda etapa com Room/SQLite/DAOs/Migrations):
+   - Sempre validar schema real, integridade de colunas temporais `INTEGER` (`Long` ms), queries explícitas (`RN-BKL-01`) e planos de execução (`EXPLAIN QUERY PLAN`) via `schema`, `table_info`, `query` e `explain`.
+   - Toda mutação em tabelas pai com filhos `ForeignKey.CASCADE` (`GAME`, `PLAYTHROUGH`, `PLATFORM`, `CUSTOM_LIST`) deve usar `@Upsert` ou `@Insert(ABORT)` + `@Update` (proibido `OnConflictStrategy.REPLACE` em tabelas pai) e ser validada contra SQLite real em teste instrumentado.
+3. `figcraft-designer` (Obrigatório em toda etapa de UI/UX):
+   - Tudo que for parte de UI deve consultar e inspecionar o protótipo `docs/ui_ux/DashboardScreen_Prototype.figcraft` via MCP `figcraft-designer` (`open_file`, `inspect_document`, `get_node`, `screenshot`) para confirmar layout, medidas, cores e tipografia.
+4. Checklist de Teste Visual Manual no Aparelho (Obrigatório ao fim de toda etapa com UI):
+   - Especificar claramente no `TODO.md` e na resposta ao usuário o que testar manualmente no celular (fluxos, toques, estados visuais e comportamento esperado).
+5. Registro no `TODO.md` e Commit Obrigatório por Etapa:
+   - Toda etapa ou sub-etapa de correção (`Etapa X.Y.Z`) deve estar documentada no `TODO.md` (`Rastreabilidade`, `Planejamento`, `Implementação`, `Teste`) e encerrar com `git commit` atômico (Conventional Commits) após todos os testes do `android-build-mcp` passarem no celular.

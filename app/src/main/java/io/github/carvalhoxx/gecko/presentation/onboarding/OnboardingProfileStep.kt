@@ -1,5 +1,7 @@
 package io.github.carvalhoxx.gecko.presentation.onboarding
 
+import android.content.Intent
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -45,11 +47,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import io.github.carvalhoxx.gecko.presentation.components.ByokFieldTrailingVisualState
 import io.github.carvalhoxx.gecko.presentation.components.resolveByokFieldTrailingState
 
@@ -81,10 +87,17 @@ fun OnboardingProfileStep(
     onAvatarSelected: (String?) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia()
     ) { uri ->
         if (uri != null) {
+            runCatching {
+                context.contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+            }
             onAvatarSelected(uri.toString())
         }
     }
@@ -108,15 +121,15 @@ fun OnboardingProfileStep(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = 16.dp)
             .testTag("onboarding_step_1_profile"),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
         GeckoPulsingHaloHero()
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         Text(
             text = "Bem-vindo ao Gecko",
@@ -126,7 +139,7 @@ fun OnboardingProfileStep(
             textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(6.dp))
 
         Text(
             text = "Seu diário e planejador inteligente de jogos.",
@@ -135,7 +148,7 @@ fun OnboardingProfileStep(
             textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         Surface(
             modifier = Modifier
@@ -150,7 +163,7 @@ fun OnboardingProfileStep(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(24.dp),
+                    .padding(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Box(
@@ -167,12 +180,27 @@ fun OnboardingProfileStep(
                             .testTag("onboarding_avatar_circle"),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(
-                            text = if (avatarLocalUri != null) "✓" else avatarInitial,
-                            color = OnbEmeraldSoft,
-                            fontSize = 36.sp,
-                            fontWeight = FontWeight.Bold
-                        )
+                        if (!avatarLocalUri.isNullOrBlank()) {
+                            AsyncImage(
+                                model = ImageRequest.Builder(context)
+                                    .data(Uri.parse(avatarLocalUri))
+                                    .crossfade(true)
+                                    .build(),
+                                contentDescription = "Foto de perfil selecionada",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clip(CircleShape)
+                                    .testTag("onboarding_avatar_image")
+                            )
+                        } else {
+                            Text(
+                                text = avatarInitial,
+                                color = OnbEmeraldSoft,
+                                fontSize = 36.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
                     }
 
                     Surface(
@@ -183,24 +211,32 @@ fun OnboardingProfileStep(
                             .size(48.dp)
                             .testTag("onboarding_avatar_picker_button"),
                         shape = CircleShape,
-                        color = OnbEmerald,
+                        color = Color.Transparent,
                         tonalElevation = 0.dp,
                         shadowElevation = 0.dp
                     ) {
                         Box(contentAlignment = Alignment.Center) {
-                            Text(
-                                text = "📷",
-                                fontSize = 16.sp
-                            )
+                            Box(
+                                modifier = Modifier
+                                    .size(34.dp)
+                                    .background(color = OnbEmerald, shape = CircleShape)
+                                    .border(width = 2.dp, color = OnbCardBg, shape = CircleShape),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = "📷",
+                                    fontSize = 14.sp
+                                )
+                            }
                         }
                     }
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 Text(
-                    text = if (avatarLocalUri != null) {
-                        "Foto de perfil selecionada"
+                    text = if (!avatarLocalUri.isNullOrBlank()) {
+                        "Toque na foto para alterar"
                     } else {
                         "Adicionar foto de perfil (opcional)"
                     },
@@ -210,7 +246,7 @@ fun OnboardingProfileStep(
                     textAlign = TextAlign.Center
                 )
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(18.dp))
 
                 Column(
                     modifier = Modifier.fillMaxWidth(),
@@ -341,14 +377,14 @@ private fun GeckoPulsingHaloHero(modifier: Modifier = Modifier) {
 
     Box(
         modifier = modifier
-            .size(164.dp)
+            .size(136.dp)
             .testTag("onboarding_pulsing_halo"),
         contentAlignment = Alignment.Center
     ) {
-        // AnimRippleOuter (156.dp)
+        // AnimRippleOuter (128.dp)
         Box(
             modifier = Modifier
-                .size(156.dp)
+                .size(128.dp)
                 .scale(outerScale)
                 .background(
                     color = OnbEmerald.copy(alpha = 0.06f),
@@ -361,10 +397,10 @@ private fun GeckoPulsingHaloHero(modifier: Modifier = Modifier) {
                 )
         )
 
-        // AnimRippleMid (116.dp)
+        // AnimRippleMid (96.dp)
         Box(
             modifier = Modifier
-                .size(116.dp)
+                .size(96.dp)
                 .alpha(midAlpha + 0.7f)
                 .background(
                     color = OnbEmerald.copy(alpha = 0.12f),
@@ -385,7 +421,7 @@ private fun GeckoPulsingHaloHero(modifier: Modifier = Modifier) {
             fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .align(Alignment.TopStart)
-                .offset(x = 12.dp, y = 12.dp)
+                .offset(x = 10.dp, y = 10.dp)
         )
         Text(
             text = "✦",
@@ -394,7 +430,7 @@ private fun GeckoPulsingHaloHero(modifier: Modifier = Modifier) {
             fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .offset(x = (-8).dp, y = 24.dp)
+                .offset(x = (-6).dp, y = 18.dp)
         )
         Text(
             text = "•",
@@ -403,20 +439,20 @@ private fun GeckoPulsingHaloHero(modifier: Modifier = Modifier) {
             fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .offset(x = 22.dp, y = (-12).dp)
+                .offset(x = 18.dp, y = (-10).dp)
         )
 
-        // AnimCoreGecko (78.dp)
+        // AnimCoreGecko (68.dp)
         Box(
             modifier = Modifier
-                .size(78.dp)
+                .size(68.dp)
                 .background(color = OnbCoreBg, shape = CircleShape)
                 .border(width = 2.dp, color = OnbEmeraldBright, shape = CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = "🦎",
-                fontSize = 34.sp
+                fontSize = 30.sp
             )
         }
     }

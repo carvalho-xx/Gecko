@@ -10,15 +10,24 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import io.github.carvalhoxx.gecko.ui.theme.GeckoOutlineVariant
 import io.github.carvalhoxx.gecko.ui.theme.GeckoPrimary
 import io.github.carvalhoxx.gecko.ui.theme.GeckoPrimaryContainer
@@ -31,7 +40,7 @@ import io.github.carvalhoxx.gecko.ui.theme.GeckoTextSecondary
  * - [A11Y: TOUCH_TARGET_MIN(48dp) & EXPLICIT_INACTIVE_BORDERS]:
  *   minWidth = 48.dp, minHeight = 48.dp, borda explícita de 1.dp em GeckoOutlineVariant (#2A3530) quando inativo.
  * - [UI: VIEWPORT_BUDGET(360dp_width) ! TEXT_OVERFLOW_3_COLS]:
- *   suporta subtítulo curto (<= 14 caracteres em 3 colunas) sem truncamento destrutivo.
+ *   adapta dinamicamente o tamanho da fonte em diferentes escalas de fonte e zoom de tela para evitar truncamento ("...").
  */
 @Composable
 fun SelectableChip(
@@ -70,26 +79,61 @@ fun SelectableChip(
         border = BorderStroke(width = 1.dp, color = borderColor)
     ) {
         Column(
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+            modifier = Modifier.padding(horizontal = 6.dp, vertical = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
+            AutoFitSingleLineText(
                 text = label,
                 color = labelColor,
-                style = MaterialTheme.typography.labelLarge,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                baseStyle = MaterialTheme.typography.labelLarge,
+                minFontSize = 9.sp
             )
             if (!subtitle.isNullOrBlank()) {
-                Text(
+                AutoFitSingleLineText(
                     text = subtitle,
                     color = subtitleColor,
-                    style = MaterialTheme.typography.labelSmall,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    baseStyle = MaterialTheme.typography.labelSmall,
+                    minFontSize = 8.sp
                 )
             }
         }
     }
+}
+
+@Composable
+private fun AutoFitSingleLineText(
+    text: String,
+    color: Color,
+    baseStyle: TextStyle,
+    minFontSize: TextUnit,
+    modifier: Modifier = Modifier
+) {
+    val initialSize = if (baseStyle.fontSize != TextUnit.Unspecified) baseStyle.fontSize else 12.sp
+    var currentFontSize by remember(text, initialSize) { mutableStateOf(initialSize) }
+    var currentLetterSpacing by remember(text, baseStyle.letterSpacing) {
+        mutableStateOf(baseStyle.letterSpacing)
+    }
+
+    Text(
+        text = text,
+        color = color,
+        style = baseStyle.copy(
+            fontSize = currentFontSize,
+            lineHeight = (currentFontSize.value * 1.2f).sp,
+            letterSpacing = currentLetterSpacing
+        ),
+        textAlign = TextAlign.Center,
+        maxLines = 1,
+        softWrap = false,
+        overflow = TextOverflow.Ellipsis,
+        modifier = modifier,
+        onTextLayout = { layoutResult ->
+            if (layoutResult.didOverflowWidth && currentFontSize.value > minFontSize.value) {
+                val nextValue = (currentFontSize.value * 0.9f).coerceAtLeast(minFontSize.value)
+                currentFontSize = nextValue.sp
+                currentLetterSpacing = 0.sp
+            }
+        }
+    )
 }
