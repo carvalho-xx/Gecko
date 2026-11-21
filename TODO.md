@@ -23,13 +23,20 @@
 - **UDF Visual Exclusivo:** Nunca exibir cursor `|` junto com `✓`; nunca exibir botão `Validar` junto com estado `✓ Conectado`; credenciais multi-campo (IGDB, Steam, RetroAchievements) em Modal Bottom Sheet; apenas chave única (`npsso`, RAWG) inline.
 - **Testabilidade:** `Modifier.testTag(...)` nos nós acionáveis; campos BYOK com `PasswordVisualTransformation()` testados via `onNodeWithTag` + `performTextInput()` (proibido `onNodeWithText` para segredos).
 
-### Protocolo Obrigatório de Ferramentas MCP (`room-sqlite-inspector` e `android-build-mcp`)
+### Protocolo Obrigatório de Ferramentas MCP, Testes no Aparelho, Erros e Commits
 1. **`room-sqlite-inspector` (Obrigatório em toda etapa com Room/SQLite/DAOs/Migrations):**
    - Sempre validar schema real, integridade de colunas temporais `INTEGER` (`Long` ms), queries explícitas (ex.: `RN-BKL-01`) e planos de execução (`EXPLAIN QUERY PLAN`) via `schema`, `table_info`, `query` e `explain`.
    - Toda mutação em tabelas pai com filhos `ForeignKey.CASCADE` (`GAME`, `PLAYTHROUGH`, `PLATFORM`, `CUSTOM_LIST`) deve usar `@Upsert` ou `@Insert(ABORT)` + `@Update` (proibido `OnConflictStrategy.REPLACE` em tabelas pai) e ser validada contra SQLite real em teste instrumentado.
-2. **`android-build-mcp` (Obrigatório em builds, testes e validação em dispositivo/emulador):**
-   - Usar `list_devices`, `build_app`, `test_app`, `test_instrumented` e `lint` para compilar e executar testes unitários e instrumentados no dispositivo conectado.
-   - A partir da **Fase 2 (FGS/WorkManager)** e **Fase 3 (UI Jetpack Compose)**, usar também `install_app`, `launch_app`, `snapshot_ui`, `screenshot`, `get_logs` e `get_crash_logs` para inspecionar telas, estados visuais e ausência de crashes diretamente no aparelho.
+2. **`android-build-mcp` e Execução Padrão no Celular Conectado (Obrigatório ao fim de toda etapa):**
+   - Usar `list_devices`, `build_app`, `test_app`, `test_instrumented` e `lint` para compilar e executar testes unitários e instrumentados diretamente no dispositivo físico conectado via ADB/Wi-Fi.
+   - Executar obrigatoriamente `install_app`, `launch_app`, `snapshot_ui`, `screenshot`, `get_logs` e `get_crash_logs` ao fim de cada etapa para enviar o APK atualizado ao celular e confirmar ausência de crashes.
+3. **Checklist de Teste Visual para o Usuário (Obrigatório ao fim de toda etapa com UI):**
+   - Ao concluir qualquer etapa que tenha impacto visual ou interativo, especificar claramente no `TODO.md` e na resposta ao usuário **o que o usuário deve testar manualmente no celular** (fluxos, toques, estados visuais e comportamento esperado).
+4. **Protocolo de Erros e Ajustes Descobertos (Proibido Executar na Hora):**
+   - Sempre que um erro, bug ou necessidade de ajuste visual for encontrado (em testes ou reportado pelo usuário), **não** executá-lo imediatamente no mesmo turno.
+   - Registrar o erro/ajuste como a **próxima etapa imediata no `TODO.md`** seguindo rigorosamente o mesmo formato padrão (`Rastreabilidade`, `Planejamento`, `Implementação`, `Teste`) para execução apenas quando o usuário avançar para a próxima etapa.
+5. **Commit Obrigatório por Etapa:**
+   - Ao final de toda etapa concluída e validada, realizar obrigatoriamente um `git commit` atômico com mensagem Conventional Commits antes de encerrar o turno.
 
 ### Fontes Documentais Consolidadas
 - Requisitos: `docs/requirements/SRS_Gecko_Android_v2.1_Padrao_Engenharia.docx` e `docs/requirements/Planejamento Ágil e Backlog - Projeto Gecko.docx`
@@ -235,7 +242,7 @@
 
 ## Fase 3 — Design System M3 OLED e Telas do MVP v1.0
 
-### [ ] Etapa 3.1 — Design System Gecko M3 OLED Dark, Componentes Base e Navegação Global
+### [x] Etapa 3.1 — Design System Gecko M3 OLED Dark, Componentes Base e Navegação Global
 - **Rastreabilidade:** `RNF04`, `.agents/rules/ui_ux_design.md`, `.agents/skills/ui-prototyping/SKILL.md`, `Mapeamento_Telas_e_Fluxos_UI_UX.md` Seção 1
 - **Planejamento:**
   - Alinhar `ui/theme/Color.kt`, `Theme.kt` e `Type.kt` à paleta OLED Dark (`#0D1210` background, `#18201C`–`#242E28` superfícies Tonal Elevation, `#00E676`/`#2ECC71` primary accent, `#2A3530` outlineVariant, `#E0E0E0`/`#9E9E9E` textos).
@@ -246,6 +253,19 @@
   - Criar `presentation/navigation/GeckoRoutes.kt` e `GeckoNavHost.kt` integrando `ReleaseFeatureFlags`.
 - **Teste:**
   - Testes Compose (`createComposeRule`) validando renderização de `LicenseBadge` (`Possuo` vs `SaaS`), exclusividade de estado visual do `ByokSecretTextField` (foco vs validado) e alvos de toque mínimos (`>= 48dp`).
+  - Execução no aparelho via `android-build-mcp` (`test_app`, `test_instrumented`, `install_app`, `launch_app`, `snapshot_ui`, `get_crash_logs`).
+  - **Teste Visual Manual no Aparelho:** Abrir o app Gecko, alternar entre as 4 abas da barra inferior (`Início`, `Biblioteca`, `Agenda`, `Ajustes`) e validar contraste OLED Dark (`#0D1210`) e card Tonal Elevation (`#18201C`).
+
+### [ ] Etapa 3.1.1 — Ajuste de Densidade e Altura Compacta da Bottom Navigation Bar
+- **Rastreabilidade:** `RNF04`, `.agents/skills/ui-prototyping/SKILL.md` Seção 2 e 3 (Grelha 8pt, Alvos de Toque `>= 48dp` e Densidade Vertical)
+- **Planejamento:**
+  - Reduzir a altura vertical e o espaçamento interno da `GeckoBottomNavigationBar` em `presentation/navigation/GeckoNavHost.kt` (substituindo a altura padrão exagerada do `NavigationBar` M3 por container compacto na grelha de 8pt, ex.: `56.dp`–`64.dp` + `windowInsets` enxutos e ícone `labelMedium`/`bodyMedium`), preservando área mínima clicável de `48x48dp` por aba (`[A11Y: TOUCH_TARGET_MIN(48dp)]`) e no mínimo `24dp` de respiro para o conteúdo.
+- **Implementação:**
+  - Refatorar `GeckoBottomNavigationBar` em `presentation/navigation/GeckoNavHost.kt` com altura compacta, tipografia e ícones proporcionais sem desperdício vertical.
+- **Teste:**
+  - Atualizar e executar `GeckoDesignSystemComponentsTest` (`createComposeRule`) garantindo que cada aba da barra inferior compacta mantém alvo de toque `>= 48dp` e altura total reduzida.
+  - Executar `test_app`, `test_instrumented`, `install_app`, `launch_app`, `snapshot_ui` e `get_crash_logs` no celular via `android-build-mcp`.
+  - **Teste Visual Manual no Aparelho:** Verificar no celular se a barra de navegação inferior ficou visualmente mais compacta e proporcional, mantendo toque confortável nas 4 abas (`Início`, `Biblioteca`, `Agenda`, `Ajustes`).
 
 ### [ ] Etapa 3.2 — Fluxo de Boas-Vindas e Configuração Inicial (`WelcomeOnboardingScreen`)
 - **Rastreabilidade:** `RF01`, `RF01.1`, `RF02`, `RF06`, `RF09`, `RNF03`, `TUI-02`, Frames `ONB_01_Welcome`, `ONB_02_Pace`, `ONB_03_Platforms`

@@ -1,52 +1,54 @@
 package io.github.carvalhoxx.gecko.ui.theme
 
-import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+val GeckoOledDarkColorScheme: ColorScheme = darkColorScheme(
+    primary = GeckoPrimary,
+    onPrimary = GeckoOnPrimary,
+    primaryContainer = GeckoPrimaryContainer,
+    onPrimaryContainer = GeckoOnPrimaryContainer,
+    secondary = GeckoSecondary,
+    onSecondary = GeckoOnSecondary,
+    secondaryContainer = GeckoSecondaryContainer,
+    onSecondaryContainer = GeckoOnSecondaryContainer,
+    tertiary = GeckoTertiary,
+    onTertiary = GeckoOnTertiary,
+    tertiaryContainer = GeckoTertiaryContainer,
+    onTertiaryContainer = GeckoOnTertiaryContainer,
+    background = GeckoBackground,
+    onBackground = GeckoTextPrimary,
+    surface = GeckoSurface,
+    onSurface = GeckoTextPrimary,
+    surfaceVariant = GeckoSurfaceVariant,
+    onSurfaceVariant = GeckoTextSecondary,
+    surfaceTint = GeckoPrimary,
+    surfaceContainerLowest = GeckoBackground,
+    surfaceContainerLow = GeckoBackgroundElevated,
+    surfaceContainer = GeckoSurface,
+    surfaceContainerHigh = GeckoSurfaceContainer,
+    surfaceContainerHighest = GeckoSurfaceHigh,
+    outline = GeckoOutline,
+    outlineVariant = GeckoOutlineVariant,
+    error = GeckoError,
+    onError = GeckoOnError,
+    errorContainer = GeckoErrorContainer,
+    onErrorContainer = GeckoOnErrorContainer
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-     */
-)
-
+/**
+ * Tema Material Design 3 OLED Dark estrito do Gecko (RNF04).
+ * Mantém Tonal Elevation sobre superfícies escuras (#0D1210..#242E28) sem dynamic color
+ * por padrão para garantir contraste consistente e economia em telas OLED.
+ */
 @Composable
-fun GeckoTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
-    content: @Composable () -> Unit
-) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+fun GeckoTheme(darkTheme: Boolean = true, dynamicColor: Boolean = false, content: @Composable () -> Unit) {
+    val colorScheme = if (darkTheme && !dynamicColor) {
+        GeckoOledDarkColorScheme
+    } else {
+        GeckoOledDarkColorScheme
     }
 
     MaterialTheme(
