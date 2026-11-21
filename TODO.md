@@ -99,7 +99,7 @@
 
 ## Fase 1 — Camada de Domínio Pura (JVM) — Núcleo MVP v1.0
 
-### [ ] Etapa 1.1 — Modelos de Domínio Puros, Enums e `BacklogPolicy` (`RN-BKL-01`)
+### [x] Etapa 1.1 — Modelos de Domínio Puros, Enums e `BacklogPolicy` (`RN-BKL-01`)
 - **Rastreabilidade:** `RF06`, `RF10`, `RF20`, `RN-BKL-01`, DAS Seção 2.1
 - **Planejamento:**
   - Modelar em `domain/model/` sem nenhuma importação Android: `GameItem`, `GameStatus` (`WISHLIST`, `BACKLOG`, `PLAYING`, `COMPLETED`, `PAUSED`, `ABANDONED`), `LicenseType` (`OWNED`, `SUBSCRIPTION`, `WISHLIST`), `PlayStyle` (`RUSH`, `NORMAL`, `PLATINUM`), `Playthrough`, `JournalEntry`, `UserProfile`, `UserPaceSettings`, `ByokProviderStatus`.
