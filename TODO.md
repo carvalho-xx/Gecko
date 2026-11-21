@@ -159,7 +159,7 @@
   - **`TU-02`:** `Tempo_Total > Tempo_HLTB` → não retornar dias negativos; ativar `isOvertime = true` com projeção estendida.
   - Testes adicionais: Cenário A (conflito Day One), Cenário B (sugestão exclui estritamente `PAUSED`, `ABANDONED` e `WISHLIST`), Trava Unreleased (Day One com `hltb = 0L`), alternância de estilo (`Rushar`/`Normal`/`Platina`).
 
-### [ ] Etapa 1.4 — Escala Avaliativa `0.00–11.00`, Desempate Determinístico e KPIs do Dashboard
+### [x] Etapa 1.4 — Escala Avaliativa `0.00–11.00`, Desempate Determinístico e KPIs do Dashboard
 - **Rastreabilidade:** `US2.3`, `US5.1`, `RF17`, `RF22`
 - **Planejamento:**
   - Definir regra de validação de notas: `[0.00f..10.00f]` (2 casas decimais) ou valor honorário exato `11.00f` ("Jogo da Vida"); rejeitar valores fora da faixa (ex.: `10.50f`, `-1.0f`, `12.0f`).

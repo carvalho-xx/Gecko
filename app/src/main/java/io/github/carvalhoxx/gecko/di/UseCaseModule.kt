@@ -7,11 +7,14 @@ import dagger.hilt.components.SingletonComponent
 import io.github.carvalhoxx.gecko.domain.repository.GameRepository
 import io.github.carvalhoxx.gecko.domain.repository.PlaythroughRepository
 import io.github.carvalhoxx.gecko.domain.usecase.CalculateSmartScheduleUseCase
+import io.github.carvalhoxx.gecko.domain.usecase.GetDashboardKpisUseCase
 import io.github.carvalhoxx.gecko.domain.usecase.GetEligibleBacklogGamesUseCase
 import io.github.carvalhoxx.gecko.domain.usecase.GetVisibleBacklogGamesUseCase
 import io.github.carvalhoxx.gecko.domain.usecase.MergeDeltaBaselineUseCase
+import io.github.carvalhoxx.gecko.domain.usecase.SortGamesWithTieBreakerUseCase
 import io.github.carvalhoxx.gecko.domain.usecase.TransitionGameStatusUseCase
 import io.github.carvalhoxx.gecko.domain.usecase.UpdatePlayStyleUseCase
+import io.github.carvalhoxx.gecko.domain.usecase.ValidateAndSaveRatingUseCase
 import javax.inject.Singleton
 
 @Module
@@ -58,4 +61,25 @@ object UseCaseModule {
     @Singleton
     fun provideUpdatePlayStyleUseCase(gameRepository: GameRepository): UpdatePlayStyleUseCase =
         UpdatePlayStyleUseCase(gameRepository)
+
+    @Provides
+    @Singleton
+    fun provideValidateAndSaveRatingUseCase(gameRepository: GameRepository): ValidateAndSaveRatingUseCase =
+        ValidateAndSaveRatingUseCase(gameRepository)
+
+    @Provides
+    @Singleton
+    fun provideSortGamesWithTieBreakerUseCase(
+        mergeDeltaBaselineUseCase: MergeDeltaBaselineUseCase
+    ): SortGamesWithTieBreakerUseCase = SortGamesWithTieBreakerUseCase(mergeDeltaBaselineUseCase)
+
+    @Provides
+    @Singleton
+    fun provideGetDashboardKpisUseCase(
+        gameRepository: GameRepository,
+        mergeDeltaBaselineUseCase: MergeDeltaBaselineUseCase
+    ): GetDashboardKpisUseCase = GetDashboardKpisUseCase(
+        gameRepository = gameRepository,
+        mergeDeltaBaselineUseCase = mergeDeltaBaselineUseCase
+    )
 }
